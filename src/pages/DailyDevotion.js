@@ -20,8 +20,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useUser } from "../context/UserContext";
 import DOMPurify from 'dompurify';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 
 
 // Function to strip HTML and decode HTML entities
@@ -474,14 +475,15 @@ const handleDelete = async (id) => {
                      <Typography variant="h6" >
     Daily Devotion
   </Typography>
-                   <CKEditor
+                   {/* <CKEditor
   editor={ClassicEditor}
   data={editUser.post_content || '<p>Start typing...</p>'}
   onChange={(event, editor) => {
     const data = editor.getData();
     setEditUser(prev => ({ ...prev, post_content: data }));
   }}
-/>
+/> */}
+
 
 
                   </Box>
@@ -491,14 +493,14 @@ const handleDelete = async (id) => {
                    <Typography variant="h6" >
    Quote of Day
   </Typography>
-                   <CKEditor
+                   {/* <CKEditor
   editor={ClassicEditor}
   data={editUser.quote || '<p>Start typing...</p>'}
   onChange={(event, editor) => {
     const data = editor.getData();
     setEditUser(prev => ({ ...prev, quote: data }));
   }}
-/>
+/> */}
 
                       {/* <TextField label="Quote of Day"   multiline
                 rows={4} value={editUser.quote}
@@ -559,14 +561,14 @@ const handleDelete = async (id) => {
                      <Typography variant="h6" >
     Daily Devotion
   </Typography>
-                   <CKEditor
+                   {/* <CKEditor
   editor={ClassicEditor}
   data={Dailydeovotion || '<p>Start typing...</p>'}
   onChange={(event, editor) => {
     const data = editor.getData();
     setDailydeovotion(data);
   }}
-/>
+/> */}
 
 
                   </Box>
@@ -576,14 +578,14 @@ const handleDelete = async (id) => {
                    <Typography variant="h6" >
    Quote of Day
   </Typography>
-                   <CKEditor
+                   {/* <CKEditor
   editor={ClassicEditor}
   data={Quote || '<p>Start typing...</p>'}
   onChange={(event, editor) => {
     const data = editor.getData();
     setQuote(data);
   }}
-/>
+/> */}
 
              
                   </Box>

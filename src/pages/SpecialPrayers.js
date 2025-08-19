@@ -20,8 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useUser } from "../context/UserContext";
 import DOMPurify from 'dompurify';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 
 

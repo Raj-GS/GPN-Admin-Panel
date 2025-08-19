@@ -10,8 +10,8 @@ import {
   Radio,FormControl, Select,
   MenuItem,InputLabel,ListItemText, Checkbox, Grid
 } from "@mui/material";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const templates = [
   {
     id: 1,
@@ -321,14 +321,14 @@ console.log('Image URL:', templates.find(t => t.id === selectedTemplateId)?.imag
           <Typography variant="subtitle1" gutterBottom>
             Description *
           </Typography>
-          <CKEditor
+          {/* <CKEditor
             editor={ClassicEditor}
             data={description || ""}
             onChange={(event, editor) => {
               const data = editor.getData();
               setDescription(data);
             }}
-          />
+          /> */}
         </Box>
 
           
