@@ -48,6 +48,7 @@ const Dashboard = () => {
   const [dashboardCounts, setDashboardCounts] = useState([]);
   const [recentActivities1, setRecentActivities1] = useState(null);
   const { user } = useUser();
+const API_URL = process.env.REACT_APP_API_URL;
 
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const Dashboard = () => {
       setError('');
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:2000/api/admin/dashboard-counts', {
+        const res = await fetch(`${API_URL}dashboard-counts`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();

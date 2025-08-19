@@ -16,11 +16,11 @@ const RolesPermissions = () => {
   const [permissions, setPermissions] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
   const [rolePermissions, setRolePermissions] = useState({}); // keyed by permission_id
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   useEffect(() => {
     const fetchRolesAndPermissions = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/roles-permissions', {
+      const response = await fetch(`${API_URL}roles-permissions`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -38,7 +38,7 @@ const RolesPermissions = () => {
     setSelectedRole(roleId);
   
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/user-permissions', {
+    const response = await fetch(`${API_URL}user-permissions`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -100,7 +100,7 @@ const RolesPermissions = () => {
       module: rolePermissions[permissionId]?.module
     }));
 
-    const response = await fetch('http://localhost:2000/api/admin/save-role-permissions', {
+    const response = await fetch(`${API_URL}save-role-permissions`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

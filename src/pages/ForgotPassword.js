@@ -20,6 +20,7 @@ const ForgotPassword = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+const API_URL = process.env.REACT_APP_API_URL;
 
   // Email validation
   const validateEmail = () => {
@@ -61,7 +62,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       // Replace with your actual API endpoint
-      const res = await fetch('http://localhost:2000/api/admin/forgotpassword', {
+      const res = await fetch(`${API_URL}forgotpassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email,is_set:1 }),
@@ -93,7 +94,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       // Replace with your actual API endpoint
-      const res = await fetch('http://localhost:2000/api/admin/forgotpassword', {
+      const res = await fetch(`${API_URL}forgotpassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp,is_set:2 }),
@@ -125,7 +126,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       // Replace with your actual API endpoint
-      const res = await fetch('http://localhost:2000/api/admin/forgotpassword', {
+      const res = await fetch(`${API_URL}forgotpassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, newPassword,is_set:3 }),

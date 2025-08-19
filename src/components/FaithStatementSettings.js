@@ -4,7 +4,7 @@ import React, { useState,useEffect } from 'react';
 const FaithStatementSettings = ({ mySettings }) => {
     const [faithstatement, setFaithstatement] = useState('');
     const [id, setId] = useState(null);
-    
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
     // const handleChange = (e) => {
     //     setText(e.target.value);
     // };
@@ -22,7 +22,7 @@ const FaithStatementSettings = ({ mySettings }) => {
         const handleSave = async() => {
 
          const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:2000/api/admin/update-faithstatement-settings`, {
+        const response = await fetch(`${API_URL}update-faithstatement-settings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

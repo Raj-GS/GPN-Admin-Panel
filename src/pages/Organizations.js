@@ -48,7 +48,7 @@ const Organizations = () => {
   const [editOrg, setEditOrg] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [Bulkstatus, setBulkstatus] = useState(1); // Default status for adding to My Songs
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   const handleEditOrganization = (org) => {
     setEditOrg(org);
   };
@@ -80,7 +80,7 @@ const selectedUsers = organizations
     return;
   }
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:2000/api/admin/bulk-update-organizations', {
+  const response = await fetch(`${API_URL}bulk-update-organizations`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -106,7 +106,7 @@ const selectedUsers = organizations
   useEffect(() => {
     const fetchOrganizations = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/organizations', {
+      const response = await fetch(`${API_URL}organizations`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -134,7 +134,7 @@ const selectedUsers = organizations
 
   const handleStatusChange = async (id, status) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/update-organization-status`, {
+    const response = await fetch(`${API_URL}update-organization-status`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -173,7 +173,7 @@ const selectedUsers = organizations
   
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:2000/api/admin/sp-update-organization`, {
+      const response = await fetch(`${API_URL}sp-update-organization`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`

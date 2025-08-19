@@ -30,14 +30,14 @@ const MyProfile = () => {
   const fileInputRef = useRef();
   const [editOrg, setEditOrg] = useState({});
   const [editOrgMode, setEditOrgMode] = useState(false);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
       setError('');
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:2000/api/admin/my-profile', {
+        const res = await fetch(`${API_URL}my-profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -102,7 +102,7 @@ const MyProfile = () => {
       // Debug: verify what you're sending
       for (const [k, v] of fd.entries()) console.log('FD:', k, v);
   
-      const res = await fetch('http://localhost:2000/api/admin/update-profile', {
+      const res = await fetch(`${API_URL}update-profile`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }, // no Content-Type
         body: fd,
@@ -164,7 +164,7 @@ const MyProfile = () => {
       for (const [k, v] of fd.entries()) console.log('ORG FD:', k, v);
 
       // Adjust the endpoint as per your backend
-      const res = await fetch('http://localhost:2000/api/admin/update-organization', {
+      const res = await fetch(`${API_URL}update-organization`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }, // Don't set Content-Type for FormData
         body: fd,

@@ -56,7 +56,7 @@ const [selectedSongs, setSelectedSongs] = useState([]);
 
 const [DisplayType, setDisplayType] = useState('Both'); // default to true or false based on your app
 
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   const [eventName, seteventName] = useState('');
   const [description, Setdescription]=useState('');
 
@@ -114,7 +114,7 @@ useEffect(() => {
 const fetchSettings = async () => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:2000/api/admin/settings", {
+    const response = await fetch(`${API_URL}settings`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -135,7 +135,7 @@ const fetchSettings = async () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/filter-songs', {
+      const response = await fetch(`${API_URL}filter-songs`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -161,7 +161,7 @@ const fetchSettings = async () => {
   useEffect(() => {
     const fetchRolesAndOrganizations = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/roles-organizations', {
+      const response = await fetch(`${API_URL}roles-organizations`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -189,7 +189,7 @@ const fetchSettings = async () => {
 
   const handleSongsSettings = async () => {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/update-songs-settings', {
+    const response = await fetch(`${API_URL}update-songs-settings`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -225,7 +225,7 @@ const handleDelete = async (id) => {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await fetch('http://localhost:2000/api/admin/delete-song', {
+    const response = await fetch(`${API_URL}delete-song`, {
       method: 'POST', // You're using POST instead of DELETE
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -261,7 +261,7 @@ const ImportPdfSongs = async () => {
 
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/import-pdf-songs', {
+    const response = await fetch(`${API_URL}import-pdf-songs`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -308,7 +308,7 @@ const SongsaddtoOrganization = async () => {
     return;
   }
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:2000/api/admin/add-songs-to-organization', {
+  const response = await fetch(`${API_URL}add-songs-to-organization`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,

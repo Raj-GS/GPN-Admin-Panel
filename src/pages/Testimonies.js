@@ -112,7 +112,7 @@ export default function Testimonies() {
 
   const [editTestimonyId, setEditTestimonyId] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -133,7 +133,7 @@ export default function Testimonies() {
   const fetchCategories = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/all-prayer-categories?type=public`,{
+    const response = await fetch(`${API_URL}all-prayer-categories?type=public`,{
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -159,7 +159,7 @@ export default function Testimonies() {
   const fetchPublicPrayerList = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/testimony-list`,{
+    const response = await fetch(`${API_URL}testimony-list`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -198,7 +198,7 @@ export default function Testimonies() {
 
 
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/add-testimony`,{
+    const response = await fetch(`${API_URL}add-testimony`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -238,7 +238,7 @@ export default function Testimonies() {
 
 
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/update-testimony`,{
+    const response = await fetch(`${API_URL}update-testimony`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -297,7 +297,7 @@ const handleViewDialogClose = () => {
 }
   const handleApprovePrayer = async (id,status) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/approve-testimony`,{
+    const response = await fetch(`${API_URL}approve-testimony`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

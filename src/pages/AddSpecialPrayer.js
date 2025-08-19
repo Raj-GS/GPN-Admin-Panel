@@ -153,7 +153,8 @@ const [prayerPoints, setPrayerPoints] = useState([
 
 const [selectedTemplateId, setSelectedTemplateId] = useState(21);
 const [showAllTemplates, setShowAllTemplates] = useState(false);
-  const [categories, setCategories] = useState([]);
+const [categories, setCategories] = useState([]);
+const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchCategories();
@@ -162,7 +163,7 @@ const [showAllTemplates, setShowAllTemplates] = useState(false);
   const fetchCategories = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/special-prayer-categories`,{
+    const response = await fetch(`${API_URL}special-prayer-categories`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -241,7 +242,7 @@ const handlePrayerPointChange = (index, field, value) => {
 
 console.log('Image URL:', templates.find(t => t.id === selectedTemplateId)?.image);
 
-    const response = await fetch('http://localhost:2000/api/admin/add-special-prayer', {
+    const response = await fetch(`${API_URL}add-special-prayer`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

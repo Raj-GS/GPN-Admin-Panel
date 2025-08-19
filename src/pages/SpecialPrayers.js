@@ -60,7 +60,7 @@ const [devotionType, setDevotionType] = useState(true); // default to true or fa
   const [categories, setCategories] = useState([]);
 
 const [prayForNationEnabled, setPrayForNationEnabled] = useState(false);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
      const navigate = useNavigate();
    
     // Modal open/close
@@ -77,7 +77,7 @@ const [prayForNationEnabled, setPrayForNationEnabled] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/special-prayer-list', {
+      const response = await fetch(`${API_URL}special-prayer-list`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -118,7 +118,7 @@ const SaveDevotionSettings= async () => {
 
  const token = localStorage.getItem('token');
 
- const response = await fetch('http://localhost:2000/api/admin/update-devotion-settings', {
+ const response = await fetch(`${API_URL}update-devotion-settings`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -146,7 +146,7 @@ const handleDelete = async (id) => {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await fetch('http://localhost:2000/api/admin/delete-special-prayer', {
+    const response = await fetch(`${API_URL}delete-special-prayer`, {
       method: 'POST', // You're using POST instead of DELETE
       headers: {
         'Authorization': `Bearer ${token}`,

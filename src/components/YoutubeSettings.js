@@ -13,7 +13,7 @@ export default function YoutubeSettings({biblestudy, worship}) {
     const[biblestudyChannelId, setbiblestudyChannelId] = useState(biblestudy.channelId || '');
     const [bid, setBId] = useState(null);
     const [wid, setwId] = useState(null);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
 
     const handleChange = (index, field, value) => {
         console.log(`Changing ${field} for ${rows[index].module} to ${value}`);
@@ -37,7 +37,7 @@ export default function YoutubeSettings({biblestudy, worship}) {
     const handleSave = async() => {
 
          const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:2000/api/admin/update-youtube-settings`, {
+        const response = await fetch(`${API_URL}update-youtube-settings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

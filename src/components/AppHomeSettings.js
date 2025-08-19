@@ -111,7 +111,7 @@ const BASE_URL = "http://127.0.0.1:8000";
     const [worshipImg, setworshipImg] = useState('');
     const [id, setId] = useState(null);
 const fileMeta = [];
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
 
     // Dynamically set from mySettings
     useEffect(() => {
@@ -218,7 +218,7 @@ files.forEach((file, idx) => {
 formData.append("fileMeta", JSON.stringify(fileMeta));
 
 
-    const response = await fetch(`http://localhost:2000/api/admin/update-home-settings`, {
+    const response = await fetch(`${API_URL}update-home-settings`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`, // Don't set Content-Type manually

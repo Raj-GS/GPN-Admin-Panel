@@ -10,6 +10,7 @@ const ChangePassword = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+const API_URL = process.env.REACT_APP_API_URL;
 
   // Password validation function
   const validatePassword = () => {
@@ -48,7 +49,7 @@ const ChangePassword = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:2000/api/admin/change-password', {
+      const res = await fetch(`${API_URL}change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

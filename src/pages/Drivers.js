@@ -87,6 +87,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 
   const [selected, setSelected] = useState([]);
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];  const handleSelectAll = (event) => {
     if (event.target.checked) {
@@ -100,7 +101,7 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/driver-list', {
+      const response = await fetch(`${API_URL}driver-list`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -125,7 +126,7 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
   useEffect(() => {
     const fetchRolesAndOrganizations = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/roles-organizations', {
+      const response = await fetch(`${API_URL}roles-organizations`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -157,7 +158,7 @@ const handleClose = () => {
 
   const handleStatusChange = async (id, status) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/update-driver-status`, {
+    const response = await fetch(`${API_URL}update-driver-status`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
