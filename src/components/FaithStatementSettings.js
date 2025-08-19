@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const FaithStatementSettings = ({ mySettings }) => {
     const [faithstatement, setFaithstatement] = useState('');
     const [id, setId] = useState(null);
@@ -53,14 +53,14 @@ const FaithStatementSettings = ({ mySettings }) => {
     return (
         <div style={{ border: '1px solid #ddd', borderRadius: 4, padding: 16, background: '#fff' }}>
            
-             <CKEditor
+             {/* <CKEditor
              editor={ClassicEditor}
              data={faithstatement || '<p>Start typing...</p>'}
              onChange={(event, editor) => {
                const data = editor.getData();
                setFaithstatement(data);
              }}
-           />
+           /> */}
             <div style={{ marginTop: 16, textAlign: 'right' }}>
                 <button
                     style={{ background: '#1976d2', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: 4, marginRight: 10 }}

@@ -24,6 +24,8 @@ const Login = () => {
   const [apiError, setApiError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+const API_URL = process.env.API_URL;
+console.log(API_URL);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -54,7 +56,7 @@ const Login = () => {
     if (!validate()) return;
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:2000/api/admin/login', {
+      const res = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
