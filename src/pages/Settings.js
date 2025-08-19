@@ -13,7 +13,7 @@ const Settings = () => {
     const [mySettings, setmySettings] = useState([]);
     const [biblestudy, setbiblestudy] = useState([]);
     const [worship, setworship] = useState([]);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
 
 
       useEffect(() => {
@@ -23,7 +23,7 @@ const Settings = () => {
       const fetchSettings = async () => {
         // Replace this with your actual API call
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:2000/api/admin/settings`,{
+        const response = await fetch(`${API_URL}settings`,{
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

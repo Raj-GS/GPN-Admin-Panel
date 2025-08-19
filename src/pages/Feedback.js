@@ -71,6 +71,7 @@ const Feedback = () => {
 
 
   const [selected, setSelected] = useState([]);
+const API_URL = process.env.REACT_APP_API_URL;
 
 
 
@@ -86,7 +87,7 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/feedback-list', {
+      const response = await fetch(`${API_URL}feedback-list`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -110,7 +111,7 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
   useEffect(() => {
     const fetchRolesAndOrganizations = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/roles-organizations', {
+      const response = await fetch(`${API_URL}roles-organizations`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

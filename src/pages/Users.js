@@ -50,6 +50,7 @@ const Users = () => {
   const  [openViewDialog, setOpenViewDialog] = useState(false);
   const [Bulkstatus, setBulkstatus] = useState(1); // Default status for adding to My Songs
   const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
 // Handle "Select All"
 const handleSelectAll = (event) => {
   if (event.target.checked) {
@@ -85,7 +86,7 @@ const BulkUpdateToUser = async () => {
     return;
   }
   const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:2000/api/admin/bulk-update-users', {
+  const response = await fetch(`${API_URL}bulk-update-users`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -112,7 +113,7 @@ const BulkUpdateToUser = async () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/users-list', {
+      const response = await fetch(`${API_URL}users-list`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -138,7 +139,7 @@ const BulkUpdateToUser = async () => {
   useEffect(() => {
     const fetchRolesAndOrganizations = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/roles-organizations', {
+      const response = await fetch(`${API_URL}roles-organizations`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -175,7 +176,7 @@ const BulkUpdateToUser = async () => {
   
     formData.append("id", editUser.user_id);
 
-    const response = await fetch('http://localhost:2000/api/admin/update-user', {
+    const response = await fetch(`${API_URL}update-user`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -193,7 +194,7 @@ const BulkUpdateToUser = async () => {
   };
   const handleActivate = async (id,status) => {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/update-user-status', {
+    const response = await fetch(`${API_URL}update-user-status`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

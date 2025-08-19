@@ -56,6 +56,7 @@ const [devotionType, setDevotionType] = useState(true); // default to true or fa
   const [Quote, setQuote] = useState('');
   const [Author, setAuthor] = useState('');
 
+const API_URL = process.env.REACT_APP_API_URL;
 
    
     // Modal open/close
@@ -72,7 +73,7 @@ const [devotionType, setDevotionType] = useState(true); // default to true or fa
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/devotion-list', {
+      const response = await fetch(`${API_URL}devotion-list`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -112,7 +113,7 @@ const handleViewDialogClose = () => {
   }
 
 
-    const response = await fetch('http://localhost:2000/api/admin/add-devotion', {
+    const response = await fetch(`${API_URL}add-devotion`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -145,7 +146,7 @@ const handleViewDialogClose = () => {
     return false;
   }
 
-    const response = await fetch('http://localhost:2000/api/admin/update-devotion', {
+    const response = await fetch(`${API_URL}update-devotion`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -176,7 +177,7 @@ const SaveDevotionSettings= async () => {
 
  const token = localStorage.getItem('token');
 
- const response = await fetch('http://localhost:2000/api/admin/update-devotion-settings', {
+ const response = await fetch(`${API_URL}update-devotion-settings`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -204,7 +205,7 @@ const handleDelete = async (id) => {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await fetch('http://localhost:2000/api/admin/delete-devotion', {
+    const response = await fetch(`${API_URL}delete-devotion`, {
       method: 'POST', // You're using POST instead of DELETE
       headers: {
         'Authorization': `Bearer ${token}`,

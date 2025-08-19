@@ -12,6 +12,7 @@ const ApprovalSettings = ({ approvals }) => {
         const [backgroundBv, setBackgroundBv] = useState('no');
         const [rideApproval, setRideApproval] = useState('no');
         const [rideBv, setRideBv] = useState('no');
+        const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
 
 useEffect(() => {
     if (approvals) {
@@ -30,7 +31,7 @@ useEffect(() => {
 
 const SaveApprovalSettings = async () => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/update-approval-settings`, {
+    const response = await fetch(`${API_URL}update-approval-settings`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

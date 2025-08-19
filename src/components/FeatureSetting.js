@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 
 const FeatureSettings = ({ mySettings }) => {  // destructure props here
   const [rideEnabled, setRideEnabled] = useState('no');
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   useEffect(() => {
     if (mySettings && mySettings.length > 0) {
             setRideEnabled(mySettings[0].ride || "no");
@@ -14,7 +14,7 @@ const FeatureSettings = ({ mySettings }) => {  // destructure props here
 
 const SaveApprovalSettings = async () => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/update-approval-settings`, {
+    const response = await fetch(`${API_URL}update-approval-settings`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

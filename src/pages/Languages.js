@@ -37,7 +37,7 @@ const Languages = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [languageId, setLanguageId] = useState(null);
-
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   const handleOpen = (lang = null) => {
     setEditing(lang);
     setLanguageId(lang ? lang.id : null);
@@ -57,7 +57,7 @@ const Languages = () => {
 
     if (editing) {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:2000/api/admin/update-language', {
+        const response = await fetch(`${API_URL}update-language`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -81,7 +81,7 @@ const Languages = () => {
       else{
 
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:2000/api/admin/add-language', {
+        const response = await fetch(`${API_URL}add-language`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -108,7 +108,7 @@ const Languages = () => {
   const handleDelete = async(id) => {
     if (window.confirm("Are you sure you want to delete this language?")) {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:2000/api/admin/delete-language', {
+        const response = await fetch(`${API_URL}delete-language`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -132,7 +132,7 @@ const Languages = () => {
   const fetchLanguages = async () => {
 
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/languages', {
+    const response = await fetch(`${API_URL}languages`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

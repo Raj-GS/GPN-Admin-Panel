@@ -22,6 +22,7 @@ const [author, SetAuthor] = useState("");
 const [engtitle, setEngTitle] = useState("");
 const [engLyrics, setEngLyrics] = useState("");
 const [copyright, setCopyright] = useState("no");
+const API_URL = process.env.REACT_APP_API_URL;
 
 const { id } = useParams();
 
@@ -32,7 +33,7 @@ const { id } = useParams();
   const fetchCategories = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/get-song-details`,{
+    const response = await fetch(`${API_URL}get-song-details`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -63,7 +64,7 @@ const { id } = useParams();
     alert("Title and Song are required fields");
     return false;
   }
-    const response = await fetch('http://localhost:2000/api/admin/update-song', {
+    const response = await fetch(`${API_URL}update-song`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

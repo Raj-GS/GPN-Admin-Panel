@@ -103,6 +103,7 @@ export default function PrivatePrayers() {
   const [PendingPrayers, SetPendingPrayers]=useState(0);
   const [AnsweredPrayers, SetAnsweredPrayers]=useState(0);
   const [DeclinePrayers, SetADeclinePrayers]=useState(0);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -110,7 +111,7 @@ export default function PrivatePrayers() {
   const fetchCategories = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/all-prayer-categories?type=private`,{
+    const response = await fetch(`${API_URL}all-prayer-categories?type=private`,{
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -135,7 +136,7 @@ export default function PrivatePrayers() {
   const fetchPublicPrayerList = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/private-prayer-list`,{
+    const response = await fetch(`${API_URL}private-prayer-list`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -170,7 +171,7 @@ export default function PrivatePrayers() {
       return;
     }
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/add-public-prayer`,{
+    const response = await fetch(`${API_URL}add-public-prayer`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -226,7 +227,7 @@ const handleViewDialogClose = () => {
 }
   const handleApprovePrayer = async (id,status) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/approve-prayer`,{
+    const response = await fetch(`${API_URL}approve-prayer`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

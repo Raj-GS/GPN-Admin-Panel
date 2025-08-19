@@ -35,7 +35,7 @@ const [addCategory, setAddCategory] = useState(false);
 
 const [category, setCategory]=useState('');
 
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
 
 
 
@@ -47,7 +47,7 @@ const [category, setCategory]=useState('');
   const fetchCategories = async () => {
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:2000/api/admin/special-prayer-categories`,{
+    const response = await fetch(`${API_URL}special-prayer-categories`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -84,7 +84,7 @@ const [category, setCategory]=useState('');
 
     if(window.confirm("Are you sure you want to delete this category?")){
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/delete-special-prayer-category', {
+      const response = await fetch(`${API_URL}delete-special-prayer-category`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -114,7 +114,7 @@ const [category, setCategory]=useState('');
       return false;
     }
 
-    const response = await fetch('http://localhost:2000/api/admin/update-special-prayer-category', {
+    const response = await fetch(`${API_URL}update-special-prayer-category`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -141,7 +141,7 @@ const [category, setCategory]=useState('');
         return false;
     }
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/add-special-prayer-category', {
+    const response = await fetch(`${API_URL}add-special-prayer-category`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

@@ -37,7 +37,7 @@ const Roles = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [roleId, setRoleId] = useState(null);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   const handleOpen = (role = null) => {
     setEditing(role);
     setRoleId(role ? role.id : null);
@@ -56,7 +56,7 @@ const Roles = () => {
 
     if (editing) {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:2000/api/admin/update-role', {
+        const response = await fetch(`${API_URL}update-role`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -79,7 +79,7 @@ const Roles = () => {
       else{
 
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:2000/api/admin/add-role', {
+        const response = await fetch(`${API_URL}add-role`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -105,7 +105,7 @@ const Roles = () => {
   const handleDelete = async(id) => {
     if (window.confirm("Are you sure you want to delete this role?")) {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:2000/api/admin/delete-role', {
+        const response = await fetch(`${API_URL}delete-role`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -129,7 +129,7 @@ const Roles = () => {
   const fetchRoles = async () => {
 
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:2000/api/admin/roles', {
+    const response = await fetch(`${API_URL}roles`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

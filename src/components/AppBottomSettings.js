@@ -8,7 +8,7 @@ export default function AppBottomSettings({ mySettings }) {
     const [eventsEnabled, setEventsEnabled] = useState('no');
     const [testimonyEnabled, setTestimonyEnabled] = useState('no');
     const [id, setId] = useState(null);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
     useEffect(() => {
         if (mySettings && mySettings.length > 0) {
             const orgSettings = mySettings[0]; // first org's settings
@@ -48,7 +48,7 @@ export default function AppBottomSettings({ mySettings }) {
 
     const SaveApprovalSettings = async () => {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:2000/api/admin/update-bottom-bar-settings`, {
+        const response = await fetch(`${API_URL}update-bottom-bar-settings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

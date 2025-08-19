@@ -18,7 +18,7 @@ const songs = [
 const PdfSongs = () => {
     const [selectedPdf, setSelectedPdf] = useState(null);
     const [pdfs, setSongs] = useState([]);
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
     const handlePdfClick = (pdfUrl) => {
         setSelectedPdf(pdfUrl);
     };
@@ -30,7 +30,7 @@ const PdfSongs = () => {
      useEffect(() => {
        const fetchPdfSongs = async () => {
          const token = localStorage.getItem('token');
-         const response = await fetch('http://localhost:2000/api/admin/songs-pdf-list', {
+         const response = await fetch(`${API_URL}songs-pdf-list`, {
            headers: {
              'Authorization': `Bearer ${token}`
            }

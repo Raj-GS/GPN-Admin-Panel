@@ -32,6 +32,7 @@ const Subscribers = () => {
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];  const handleSelectAll = (event) => {
     if (event.target.checked) {
       setSelected(users.map((user) => user.id));
@@ -52,7 +53,7 @@ const Subscribers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:2000/api/admin/prayer-subscriber-list', {
+      const response = await fetch(`${API_URL}prayer-subscriber-list`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
