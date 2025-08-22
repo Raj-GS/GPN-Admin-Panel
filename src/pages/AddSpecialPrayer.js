@@ -10,6 +10,8 @@ import {
   Radio,FormControl, Select,
   MenuItem,InputLabel,ListItemText, Checkbox, Grid
 } from "@mui/material";
+import { Editor } from "@tinymce/tinymce-react";
+
 // import { CKEditor } from "@ckeditor/ckeditor5-react";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const templates = [
@@ -322,6 +324,43 @@ console.log('Image URL:', templates.find(t => t.id === selectedTemplateId)?.imag
           <Typography variant="subtitle1" gutterBottom>
             Description *
           </Typography>
+
+
+          <Editor
+            apiKey={process.env.REACT_APP_EDITOR_KEY}
+            value={description || "<p>Start typing...</p>"}
+            init={{
+              height: 300,
+              menubar: false,
+              statusbar: false,
+              plugins: [
+                "advlist",
+                "autolink",
+                "lists",
+                "link",
+                "image",
+                "charmap",
+                "preview",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "code",
+                "fullscreen",
+                "insertdatetime",
+                "media",
+                "table",
+                "help",
+                "wordcount",
+              ],
+              toolbar:
+                "undo redo | formatselect | bold italic backcolor | " +
+                "alignleft aligncenter alignright alignjustify | " +
+                "bullist numlist outdent indent | removeformat | help",
+            }}
+            onEditorChange={(content) =>
+              setDescription(content )
+            }
+          />
           {/* <CKEditor
             editor={ClassicEditor}
             data={description || ""}

@@ -1,4 +1,6 @@
 import React, { useState,useEffect } from 'react';
+import { Editor } from "@tinymce/tinymce-react";
+
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const FaithStatementSettings = ({ mySettings }) => {
@@ -52,7 +54,41 @@ const FaithStatementSettings = ({ mySettings }) => {
 
     return (
         <div style={{ border: '1px solid #ddd', borderRadius: 4, padding: 16, background: '#fff' }}>
-           
+         <Editor
+                              apiKey={process.env.REACT_APP_EDITOR_KEY}
+                              value={faithstatement || "<p>Start typing...</p>"}
+                              init={{
+                                height: 300,
+                                menubar: false,
+                                statusbar: false,
+                                plugins: [
+                                  "advlist",
+                                  "autolink",
+                                  "lists",
+                                  "link",
+                                  "image",
+                                  "charmap",
+                                  "preview",
+                                  "anchor",
+                                  "searchreplace",
+                                  "visualblocks",
+                                  "code",
+                                  "fullscreen",
+                                  "insertdatetime",
+                                  "media",
+                                  "table",
+                                  "help",
+                                  "wordcount",
+                                ],
+                                toolbar:
+                                  "undo redo | formatselect | bold italic backcolor | " +
+                                  "alignleft aligncenter alignright alignjustify | " +
+                                  "bullist numlist outdent indent | removeformat | help",
+                              }}
+                              onEditorChange={(content) =>
+                                setFaithstatement(content )
+                              }
+                            />   
              {/* <CKEditor
              editor={ClassicEditor}
              data={faithstatement || '<p>Start typing...</p>'}
