@@ -12,7 +12,7 @@ import {
   CardContent,
   Grid,
   IconButton,
-  InputAdornment,RadioGroup,Radio,Paper,Pagination,Dialog, DialogTitle, DialogContent,
+  InputAdornment,RadioGroup,Radio,Paper,Pagination,Dialog, DialogTitle, DialogContent, Stack
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,9 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useUser } from "../context/UserContext";
 import DOMPurify from 'dompurify';
-// import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
+import { Editor } from "@tinymce/tinymce-react";
 
 
 // Function to strip HTML and decode HTML entities
@@ -34,6 +32,7 @@ const stripHtml = (html) => {
 
 
 const DailyDevotions = () => {
+  const [value, setValue] = useState("<p>Hello, world!</p>");
 
   const [search, setSearch] = useState("");
 const [devotionType, setDevotionType] = useState(true); // default to true or false based on your app
@@ -476,6 +475,45 @@ const handleDelete = async (id) => {
                      <Typography variant="h6" >
     Daily Devotion
   </Typography>
+
+
+<Editor
+  apiKey={process.env.REACT_APP_EDITOR_KEY}
+  value={editUser.post_content || "<p>Start typing...</p>"}
+  init={{
+    height: 400,
+    menubar: false,
+    statusbar: false,
+    plugins: [
+      "advlist",
+      "autolink",
+      "lists",
+      "link",
+      "image",
+      "charmap",
+      "preview",
+      "anchor",
+      "searchreplace",
+      "visualblocks",
+      "code",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "table",
+      "help",
+      "wordcount",
+    ],
+    toolbar:
+      "undo redo | formatselect | bold italic backcolor | " +
+      "alignleft aligncenter alignright alignjustify | " +
+      "bullist numlist outdent indent | removeformat | help",
+  }}
+  onEditorChange={(content) =>
+    setEditUser((prev) => ({ ...prev, post_content: content }))
+  }
+/>
+
+
                    {/* <CKEditor
   editor={ClassicEditor}
   data={editUser.post_content || '<p>Start typing...</p>'}
@@ -494,6 +532,44 @@ const handleDelete = async (id) => {
                    <Typography variant="h6" >
    Quote of Day
   </Typography>
+
+
+<Editor
+  apiKey={process.env.REACT_APP_EDITOR_KEY}
+  value={editUser.quote || "<p>Start typing...</p>"}
+  init={{
+    height: 200,
+    menubar: false,
+    statusbar: false,
+    plugins: [
+      "advlist",
+      "autolink",
+      "lists",
+      "link",
+      "image",
+      "charmap",
+      "preview",
+      "anchor",
+      "searchreplace",
+      "visualblocks",
+      "code",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "table",
+      "help",
+      "wordcount",
+    ],
+    toolbar:
+      "undo redo | formatselect | bold italic backcolor | " +
+      "alignleft aligncenter alignright alignjustify | " +
+      "bullist numlist outdent indent | removeformat | help",
+  }}
+  onEditorChange={(content) =>
+    setEditUser((prev) => ({ ...prev, quote: content }))
+  }
+/>
+
                    {/* <CKEditor
   editor={ClassicEditor}
   data={editUser.quote || '<p>Start typing...</p>'}
@@ -562,6 +638,44 @@ const handleDelete = async (id) => {
                      <Typography variant="h6" >
     Daily Devotion
   </Typography>
+
+
+<Editor
+  apiKey={process.env.REACT_APP_EDITOR_KEY}
+  value={Dailydeovotion || "<p>Start typing...</p>"}
+  init={{
+    height: 300,
+    menubar: false,
+    statusbar: false,
+    plugins: [
+      "advlist",
+      "autolink",
+      "lists",
+      "link",
+      "image",
+      "charmap",
+      "preview",
+      "anchor",
+      "searchreplace",
+      "visualblocks",
+      "code",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "table",
+      "help",
+      "wordcount",
+    ],
+    toolbar:
+      "undo redo | formatselect | bold italic backcolor | " +
+      "alignleft aligncenter alignright alignjustify | " +
+      "bullist numlist outdent indent | removeformat | help",
+  }}
+  onEditorChange={(content) =>
+    setDailydeovotion(content )
+  }
+/>
+
                    {/* <CKEditor
   editor={ClassicEditor}
   data={Dailydeovotion || '<p>Start typing...</p>'}
@@ -579,14 +693,44 @@ const handleDelete = async (id) => {
                    <Typography variant="h6" >
    Quote of Day
   </Typography>
-                   {/* <CKEditor
-  editor={ClassicEditor}
-  data={Quote || '<p>Start typing...</p>'}
-  onChange={(event, editor) => {
-    const data = editor.getData();
-    setQuote(data);
+
+<Editor
+  apiKey={process.env.REACT_APP_EDITOR_KEY}
+  value={Quote || "<p>Start typing...</p>"}
+  init={{
+    height: 200,
+    menubar: false,
+    statusbar: false,
+    plugins: [
+      "advlist",
+      "autolink",
+      "lists",
+      "link",
+      "image",
+      "charmap",
+      "preview",
+      "anchor",
+      "searchreplace",
+      "visualblocks",
+      "code",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "table",
+      "help",
+      "wordcount",
+    ],
+    toolbar:
+      "undo redo | formatselect | bold italic backcolor | " +
+      "alignleft aligncenter alignright alignjustify | " +
+      "bullist numlist outdent indent | removeformat | help",
   }}
-/> */}
+  onEditorChange={(content) =>
+    setQuote(content )
+  }
+/>
+
+
 
              
                   </Box>
@@ -603,7 +747,7 @@ const handleDelete = async (id) => {
                   <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}></Box>
               </Box>
               <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-                        <Button onClick={handleViewDialogClose}>Cancel</Button> 
+                        <Button onClick={handleDialogClose}>Cancel</Button> 
                 
                   <Button variant="contained" onClick={handleAddDevotion} sx={{background: '#177373'}}>Save</Button>
               </Box>

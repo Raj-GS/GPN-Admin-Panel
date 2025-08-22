@@ -22,6 +22,8 @@ const MyProfile = () => {
   const [editMode, setEditMode] = useState(false);
   const [user, setUser] = useState(null);
   const [org, setOrg] = useState(null);
+  const [editOrgDetails, setEditOrgDetails] = useState(null);
+
   const [editUser, setEditUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -46,6 +48,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
         } else {
           setUser(data.data);
           setOrg(data.data.origanisation);
+          setEditOrgDetails(data.data.edit_org_table)
           setEditUser(data.data);
           setPreviewUrl(data.data.profile_pic || 'https://i.pravatar.cc/150');
         }
@@ -174,9 +177,9 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
       if (!res.ok || data?.success === false) {
         return setError(data?.message || 'Failed to update organization');
       }
-
-      if (data?.data) {
-        setOrg(data.data);
+console.log(data?.organization)
+      if (data?.organization) {
+        setOrg(data.organization);
       }
       setEditOrgMode(false);
     } catch (e) {
@@ -281,7 +284,14 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
                   sx={{ width: 80, height: 80, mb: 1 }}
                 />
               </Box>
-          <Typography variant="subtitle1"><b>Organization Name:</b> {org?.org_name}</Typography>
+          <Typography variant="subtitle1"><b>Organization Name:</b> {org?.org_name}
+           {org?.update_request==='Requested' &&
+          <>
+          
+          
+          </>
+          }
+          </Typography>
           <Typography variant="subtitle1"><b>Address:</b> {org?.address}</Typography>
           <Typography variant="subtitle1"><b>Contact:</b> {org?.contact_person_name}</Typography>
           <Typography variant="subtitle1"><b>Email:</b> {org?.email}</Typography>
