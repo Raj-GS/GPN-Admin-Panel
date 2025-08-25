@@ -46,6 +46,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
         if (!res.ok) {
           setError(data.message || 'Failed to load profile');
         } else {
+          console.log(data.data?.edit_org_table)
           setUser(data.data);
           setOrg(data.data.origanisation);
           setEditOrgDetails(data.data.edit_org_table)
@@ -177,9 +178,9 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
       if (!res.ok || data?.success === false) {
         return setError(data?.message || 'Failed to update organization');
       }
-console.log(data?.organization)
       if (data?.organization) {
         setOrg(data.organization);
+        setEditOrgDetails(data.organization.edit_org_table)
       }
       setEditOrgMode(false);
     } catch (e) {
@@ -284,19 +285,30 @@ console.log(data?.organization)
                   sx={{ width: 80, height: 80, mb: 1 }}
                 />
               </Box>
-          <Typography variant="subtitle1"><b>Organization Name:</b> {org?.org_name}
-           {org?.update_request==='Requested' &&
-          <>
-          
-          
-          </>
-          }
+<Box sx={{ p: 2 }}>
+  {[
+    { label: "Organization Name", value: org?.org_name, newValue: editOrgDetails[0]?.org_name },
+    { label: "Address", value: org?.address, newValue: editOrgDetails[0]?.address },
+    { label: "Contact", value: org?.contact_person_name, newValue: editOrgDetails[0]?.contact_person_name },
+    { label: "Email", value: org?.email, newValue: editOrgDetails[0]?.email },
+    { label: "Phone", value: org?.phone, newValue: editOrgDetails[0]?.phone },
+    { label: "Website", value: org?.website, newValue: editOrgDetails[0]?.website },
+  ].map((item, index) => (
+    <Grid container spacing={2} key={index} sx={{ mb: 1 }}>
+      <Grid item xs={6}>
+        <Typography variant="subtitle1"><b>{item.label}:</b> {item.value}</Typography>
+      </Grid>
+      {org?.update_request === "Requested" && (
+        <Grid item xs={6}>
+          <Typography variant="subtitle1" color="primary">
+            <b>New {item.label}:</b> {item.newValue}
           </Typography>
-          <Typography variant="subtitle1"><b>Address:</b> {org?.address}</Typography>
-          <Typography variant="subtitle1"><b>Contact:</b> {org?.contact_person_name}</Typography>
-          <Typography variant="subtitle1"><b>Email:</b> {org?.email}</Typography>
-          <Typography variant="subtitle1"><b>Phone:</b> {org?.phone}</Typography>
-          <Typography variant="subtitle1"><b>Website:</b> {org?.website}</Typography>
+        </Grid>
+      )}
+    </Grid>
+  ))}
+</Box>
+
 
           {org?.update_request==='Requested' ? (
             <Typography variant="subtitle1" color="red"><b>Update Request:</b> Pending</Typography>

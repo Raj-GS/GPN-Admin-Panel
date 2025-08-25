@@ -357,7 +357,15 @@ const selectedUsers = organizations
  
 </Box>
 <Box>
-    <Typography fontWeight={600}>{org.org_name}</Typography>
+    <Typography fontWeight={600}>{org.org_name}{org.update_request=="Requested" && (
+<Chip
+                    label="Update Request"
+                    size="small"
+                    variant="outlined"
+                    color="warning"
+                  />
+
+    ) }</Typography>
   </Box>
   </Box>
                   </TableCell>
@@ -434,7 +442,15 @@ const selectedUsers = organizations
 
       {editOrg && (
       <Dialog open={!!editOrg} onClose={() => setEditOrg(null)} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Organization</DialogTitle>
+      <DialogTitle>Edit Organization {editOrg.update_request=="Requested" && (
+<Chip
+                    label="Update Request"
+                    size="small"
+                    variant="outlined"
+                    color="warning"
+                  />
+
+    ) }</DialogTitle>
       <DialogContent>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
           <TextField
@@ -443,36 +459,77 @@ const selectedUsers = organizations
             onChange={(e) => setEditOrg({ ...editOrg, org_name: e.target.value })}
             fullWidth
           />
+           {editOrg.update_request=="Requested" && (
+           <Typography variant="subtitle1" color="primary">
+                      <b>New Organization Name:</b> {editOrg.edit_org_table[0].org_name}
+                    </Typography>
+
+           )}
           <TextField
             label="Contact Name"
             value={editOrg.contact_person_name || ""}
             onChange={(e) => setEditOrg({ ...editOrg, contact_person_name: e.target.value })}
             fullWidth
           />
+
+           {editOrg.update_request=="Requested" && (
+           <Typography variant="subtitle1" color="primary">
+                      <b>New Contact Name:</b> {editOrg.edit_org_table[0].contact_person_name}
+                    </Typography>
+
+           )}
           <TextField
             label="Contact Email"
             value={editOrg.email || ""}
             onChange={(e) => setEditOrg({ ...editOrg, email: e.target.value })}
             fullWidth
           />
+
+           {editOrg.update_request=="Requested" && (
+           <Typography variant="subtitle1" color="primary">
+                      <b>Contact Email:</b> {editOrg.edit_org_table[0].email}
+                    </Typography>
+
+           )}
           <TextField
             label="Phone"
             value={editOrg.phone || ""}
             onChange={(e) => setEditOrg({ ...editOrg, phone: e.target.value })}
             fullWidth
           />
+
+          {editOrg.update_request=="Requested" && (
+           <Typography variant="subtitle1" color="primary">
+                      <b>New Phone:</b> {editOrg.edit_org_table[0].phone}
+                    </Typography>
+
+           )}
           <TextField
             label="Address"
             value={editOrg.address || ""}
             onChange={(e) => setEditOrg({ ...editOrg, address: e.target.value })}
             fullWidth
           />
+
+           {editOrg.update_request=="Requested" && (
+           <Typography variant="subtitle1" color="primary">
+                      <b>New Address:</b> {editOrg.edit_org_table[0].address}
+                    </Typography>
+
+           )}
           <TextField
             label="Website"
             value={editOrg.website || ""}
             onChange={(e) => setEditOrg({ ...editOrg, website: e.target.value })}
             fullWidth
           />
+
+          {editOrg.update_request=="Requested" && (
+           <Typography variant="subtitle1" color="primary">
+                      <b>New Website:</b> {editOrg.edit_org_table[0].website}
+                    </Typography>
+
+           )}
           {/* Logo upload (optional, you can keep as text if you want) */}
           <Box>
             <Typography variant="body2" sx={{ mb: 0.5 }}>Logo</Typography>
@@ -493,12 +550,31 @@ const selectedUsers = organizations
                 <img src={editOrg.logo} alt="Logo" style={{ maxWidth: 80, maxHeight: 80, borderRadius: 4 }} />
               </Box>
             )}
+
+           {editOrg.update_request === "Requested" && 
+  editOrg.edit_org_table[0]?.logo &&
+  typeof editOrg.edit_org_table[0]?.logo === "string" && (
+    <Typography variant="subtitle1" color="primary">
+      <b>New Logo:</b>  <img src={editOrg.edit_org_table[0]?.logo} alt="Logo" style={{ maxWidth: 80, maxHeight: 80, borderRadius: 4 }} />
+    </Typography>
+)}
+
           </Box>
         </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setEditOrg(null)}>Cancel</Button>
+          {editOrg.update_request == "Requested" ? (
+            <>
+           <Button onClick={saveEdit} variant="contained">Accept</Button>
+          <Button onClick={saveEdit} variant="warning">Reject</Button>
+</>
+          )
+          : 
+          (
         <Button onClick={saveEdit} variant="contained">Save</Button>
+          )
+          }
       </DialogActions>
     </Dialog>
       )}

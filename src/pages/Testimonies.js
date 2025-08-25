@@ -12,8 +12,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Checkbox,
-  FormControlLabel,
   Chip,
   Dialog,
   DialogTitle,
@@ -76,7 +74,6 @@ export default function Testimonies() {
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("medium");
   const [requestText, setRequestText] = useState("");
-  const [submitAnon, setSubmitAnon] = useState(false);
   const [formError, setFormError] = useState("");
 
   // Modal and snackbar states
@@ -107,7 +104,6 @@ export default function Testimonies() {
 
   const [ActivePrayers, SetActivePrayers]=useState(0);
   const [PendingPrayers, SetPendingPrayers]=useState(0);
-  const [AnsweredPrayers, SetAnsweredPrayers]=useState(0);
   const [DeclinePrayers, SetADeclinePrayers]=useState(0);
 
   const [editTestimonyId, setEditTestimonyId] = useState(null);
