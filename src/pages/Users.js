@@ -6,11 +6,9 @@ import {
   Select, Chip, Avatar, Dialog, DialogTitle, DialogContent,Menu,DialogActions
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
-import ExportIcon from "@mui/icons-material/Download";
+
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
@@ -31,7 +29,6 @@ function formatDate(dateStr) {
 }
 
 const Users = () => {
-    const [openDialog, setOpenDialog] = useState(false);
   
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All Status");
@@ -229,9 +226,7 @@ const handleViewDialogClose = () => {
 //  setSelectedSongs([]);
 }
 
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
+
 
 
 
@@ -591,7 +586,7 @@ const handleViewDialogClose = () => {
 
 
 
-<Dialog open={openViewDialog} onClose={handleDialogClose} fullWidth maxWidth="sm">
+<Dialog open={openViewDialog} onClose={handleViewDialogClose} fullWidth maxWidth="sm">
   <DialogTitle>
     {Bulkstatus === 1
       ? "Background Verify User List"

@@ -13,6 +13,8 @@ import {
 // import { CKEditor } from "@ckeditor/ckeditor5-react";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useParams } from 'react-router-dom';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // import styles
 
 const templates = [
   {
@@ -393,14 +395,13 @@ console.log('Image URL:', templates.find(t => t.id === selectedTemplateId)?.imag
           <Typography variant="subtitle1" gutterBottom>
             Description *
           </Typography>
-          {/* <CKEditor
-            editor={ClassicEditor}
-            data={description || ""}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setDescription(data);
-            }}
-          /> */}
+
+
+            <ReactQuill
+                        theme="snow"
+                        value={description}
+                        onChange={(content) => setDescription(content)}
+                      />
         </Box>
 
           

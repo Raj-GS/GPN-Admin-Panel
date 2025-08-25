@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.ql-editor {
+  line-height: 1.5rem !important;
+  min-height: calc(1.5rem * 5) !important;   /* starts with 5 rows */
+  max-height: 400px !important;           /* expands until this height */
+  overflow-y: auto !important;
+}
+

@@ -20,8 +20,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useUser } from "../context/UserContext";
 import DOMPurify from 'dompurify';
-import { Editor } from "@tinymce/tinymce-react";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // import styles
 
 // Function to strip HTML and decode HTML entities
 const stripHtml = (html) => {
@@ -476,52 +476,18 @@ const handleDelete = async (id) => {
     Daily Devotion
   </Typography>
 
-
-<Editor
-  apiKey={process.env.REACT_APP_EDITOR_KEY}
-  value={editUser.post_content || "<p>Start typing...</p>"}
-  init={{
-    height: 400,
-    menubar: false,
-    statusbar: false,
-    plugins: [
-      "advlist",
-      "autolink",
-      "lists",
-      "link",
-      "image",
-      "charmap",
-      "preview",
-      "anchor",
-      "searchreplace",
-      "visualblocks",
-      "code",
-      "fullscreen",
-      "insertdatetime",
-      "media",
-      "table",
-      "help",
-      "wordcount",
-    ],
-    toolbar:
-      "undo redo | formatselect | bold italic backcolor | " +
-      "alignleft aligncenter alignright alignjustify | " +
-      "bullist numlist outdent indent | removeformat | help",
-  }}
-  onEditorChange={(content) =>
+<ReactQuill
+  theme="snow"
+  value={editUser.post_content}
+  onChange={(content) =>
     setEditUser((prev) => ({ ...prev, post_content: content }))
   }
 />
 
 
-                   {/* <CKEditor
-  editor={ClassicEditor}
-  data={editUser.post_content || '<p>Start typing...</p>'}
-  onChange={(event, editor) => {
-    const data = editor.getData();
-    setEditUser(prev => ({ ...prev, post_content: data }));
-  }}
-/> */}
+
+
+               
 
 
 
@@ -533,42 +499,14 @@ const handleDelete = async (id) => {
    Quote of Day
   </Typography>
 
-
-<Editor
-  apiKey={process.env.REACT_APP_EDITOR_KEY}
-  value={editUser.quote || "<p>Start typing...</p>"}
-  init={{
-    height: 200,
-    menubar: false,
-    statusbar: false,
-    plugins: [
-      "advlist",
-      "autolink",
-      "lists",
-      "link",
-      "image",
-      "charmap",
-      "preview",
-      "anchor",
-      "searchreplace",
-      "visualblocks",
-      "code",
-      "fullscreen",
-      "insertdatetime",
-      "media",
-      "table",
-      "help",
-      "wordcount",
-    ],
-    toolbar:
-      "undo redo | formatselect | bold italic backcolor | " +
-      "alignleft aligncenter alignright alignjustify | " +
-      "bullist numlist outdent indent | removeformat | help",
-  }}
-  onEditorChange={(content) =>
+<ReactQuill
+  theme="snow"
+  value={editUser.quote}
+  onChange={(content) =>
     setEditUser((prev) => ({ ...prev, quote: content }))
   }
 />
+
 
                    {/* <CKEditor
   editor={ClassicEditor}
@@ -638,52 +576,13 @@ const handleDelete = async (id) => {
                      <Typography variant="h6" >
     Daily Devotion
   </Typography>
-
-
-<Editor
-  apiKey={process.env.REACT_APP_EDITOR_KEY}
-  value={Dailydeovotion || "<p>Start typing...</p>"}
-  init={{
-    height: 300,
-    menubar: false,
-    statusbar: false,
-    plugins: [
-      "advlist",
-      "autolink",
-      "lists",
-      "link",
-      "image",
-      "charmap",
-      "preview",
-      "anchor",
-      "searchreplace",
-      "visualblocks",
-      "code",
-      "fullscreen",
-      "insertdatetime",
-      "media",
-      "table",
-      "help",
-      "wordcount",
-    ],
-    toolbar:
-      "undo redo | formatselect | bold italic backcolor | " +
-      "alignleft aligncenter alignright alignjustify | " +
-      "bullist numlist outdent indent | removeformat | help",
-  }}
-  onEditorChange={(content) =>
-    setDailydeovotion(content )
+<ReactQuill
+  theme="snow"
+  value={Dailydeovotion}
+  onChange={(content) =>
+    setDailydeovotion(content)
   }
 />
-
-                   {/* <CKEditor
-  editor={ClassicEditor}
-  data={Dailydeovotion || '<p>Start typing...</p>'}
-  onChange={(event, editor) => {
-    const data = editor.getData();
-    setDailydeovotion(data);
-  }}
-/> */}
 
 
                   </Box>
@@ -693,46 +592,14 @@ const handleDelete = async (id) => {
                    <Typography variant="h6" >
    Quote of Day
   </Typography>
-
-<Editor
-  apiKey={process.env.REACT_APP_EDITOR_KEY}
-  value={Quote || "<p>Start typing...</p>"}
-  init={{
-    height: 200,
-    menubar: false,
-    statusbar: false,
-    plugins: [
-      "advlist",
-      "autolink",
-      "lists",
-      "link",
-      "image",
-      "charmap",
-      "preview",
-      "anchor",
-      "searchreplace",
-      "visualblocks",
-      "code",
-      "fullscreen",
-      "insertdatetime",
-      "media",
-      "table",
-      "help",
-      "wordcount",
-    ],
-    toolbar:
-      "undo redo | formatselect | bold italic backcolor | " +
-      "alignleft aligncenter alignright alignjustify | " +
-      "bullist numlist outdent indent | removeformat | help",
-  }}
-  onEditorChange={(content) =>
-    setQuote(content )
+<ReactQuill
+  theme="snow"
+  value={Quote}
+  onChange={(content) =>
+    setQuote(content)
   }
 />
 
-
-
-             
                   </Box>
                  
                   <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>

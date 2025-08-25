@@ -1,18 +1,11 @@
 import React, { useState,useEffect } from 'react';
-// import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // import styles
 const FaithStatementSettings = ({ mySettings }) => {
     const [faithstatement, setFaithstatement] = useState('');
     const [id, setId] = useState(null);
     const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
-    // const handleChange = (e) => {
-    //     setText(e.target.value);
-    // };
 
-    // const handleSave = () => {
-    //     // Add save logic here
-    //     alert('Saved: ' + text);
-    // };
 
     const handleCancel = () => {
         setFaithstatement('');
@@ -52,15 +45,15 @@ const FaithStatementSettings = ({ mySettings }) => {
 
     return (
         <div style={{ border: '1px solid #ddd', borderRadius: 4, padding: 16, background: '#fff' }}>
-           
-             {/* <CKEditor
-             editor={ClassicEditor}
-             data={faithstatement || '<p>Start typing...</p>'}
-             onChange={(event, editor) => {
-               const data = editor.getData();
-               setFaithstatement(data);
-             }}
-           /> */}
+
+
+            <ReactQuill
+              theme="snow"
+              value={faithstatement}
+              onChange={(content) => setFaithstatement(content)}
+            />
+
+
             <div style={{ marginTop: 16, textAlign: 'right' }}>
                 <button
                     style={{ background: '#1976d2', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: 4, marginRight: 10 }}
