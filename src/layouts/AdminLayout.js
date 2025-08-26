@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, AppBar, Toolbar, Typography, IconButton, CssBaseline, Divider, useTheme } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
@@ -26,7 +26,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import { useUser } from "../context/UserContext";
-
+import NotificationDropdown from '../components/NotificationDropdown ';
 const drawerWidth = 240;
 
 const navItems = [
@@ -75,12 +75,16 @@ const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
   const [avatarMenuAnchor, setAvatarMenuAnchor] = useState(null);
   const isAvatarMenuOpen = Boolean(avatarMenuAnchor);
-const [openMenus, setOpenMenus] = useState({});
+  const [openMenus, setOpenMenus] = useState({});
   const { user } = useUser();
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+const [notifications, setNotifications] = useState([]);
+const [unreadNotifyCount, setUnreadNotifyCount] = useState(0);
+
+
+const API_URL = process.env.REACT_APP_API_URL;
 
   const handleAvatarClick = (event) => {
     setAvatarMenuAnchor(event.currentTarget);
@@ -116,6 +120,29 @@ const filteredNavItems = navItems.filter((item) => {
   }
   return true; // keep all others
 });
+
+useEffect(() => {
+  const fetchNotications = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}notifications`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        // setError(data.message || "Failed to load notifications");
+      } else {
+        setNotifications(Array.isArray(data.notifications) ? data.notifications : []); // ✅ ensure array
+        setUnreadNotifyCount(data.unreadCount ?? 0); // ✅ ensure number
+      }
+    } catch (err) {
+      console.error("Network error", err);
+    }
+  };
+
+  fetchNotications();
+}, []);
 
 
 const drawer = (
@@ -244,12 +271,28 @@ const drawer = (
           {/* Placeholder for actions (search, notifications, etc.) */}
           <Box sx={{ flexGrow: 1 }} />
           {/* Notification Icon */}
-          <Badge badgeContent={3} color="primary">
-            <NotificationsIcon sx={{ cursor: 'pointer', color: '#1a4a3a', mx: 2 }} />
-          </Badge>
-          <IconButton onClick={handleAvatarClick} sx={{ ml: 1 }}>
-            <Avatar alt="User" src="https://i.pravatar.cc/300" />
-          </IconButton>
+         
+            <NotificationDropdown unreadCount={unreadNotifyCount} notifications={notifications} />
+
+            {/* <NotificationsIcon sx={{ cursor: 'pointer', color: '#1a4a3a', mx: 2 }} /> */}
+         
+ <IconButton onClick={handleAvatarClick} sx={{ ml: 1 }}>
+  <Avatar
+    src={user?.profile_pic || "../assets/default-avatar.jpg"} // fallback image
+    alt={user?.name || "User"}
+    sx={{
+      width: 40,
+      height: 40,
+      border: "2px solid #eee", // subtle border
+      boxShadow: 1, // slight shadow for better UI
+      transition: "transform 0.2s ease-in-out",
+      "&:hover": {
+        transform: "scale(1.1)", // hover zoom effect
+        boxShadow: 3,
+      },
+    }}
+  />
+</IconButton>
           <Menu
             anchorEl={avatarMenuAnchor}
             open={isAvatarMenuOpen}
