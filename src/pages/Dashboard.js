@@ -2,41 +2,57 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 const summaryData = [
   {
     title: "Total Users",
     value: "12,847",
     change: "+12% from last month",
     icon: "👥",
-    column: 'totalUsers'
+    column: 'totalUsers',
+    url:"users"
   },
   {
     title: "Organizations",
     value: "2,341",
     change: "+8% from last month",
     icon: "🏢",
-    column: 'totalOrganizations'
+    column: 'totalOrganizations',
+    url:"organizations"
   },
   {
     title: "Active Prayers",
     value: "8,492",
     change: "+23% from last month",
     icon: "🙏",
-    column: 'approvedPrayers'
+    column: 'approvedPrayers',
+    url:"public-prayers"
   },
   {
     title: "Pending Approvals",
     value: "127",
     change: "Needs attention",
     icon: "⏰",
-    column: 'pendingPrayers'
+    column: 'pendingPrayers',
+    url:"public-prayers"
   },
 ];
 
 const quickActions = [
-  { label: "Add New Prayer", icon: "➕" },
-  { label: "Review Prayers", icon: "✔️" },
-  { label: "System Settings", icon: "⚙️" },
+  { label: "Add New Prayer", icon: "➕" ,url:"#" },
+  { label: "Review Prayers", icon: "✔️",url:'public-prayers' },
+  { label: "System Settings", icon: "⚙️", url:'settings' },
 ];
 
 
@@ -48,8 +64,19 @@ const Dashboard = () => {
   const [dashboardCounts, setDashboardCounts] = useState([]);
   const [recentActivities1, setRecentActivities1] = useState(null);
   const { user } = useUser();
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
+  const [priority, setPriority] = useState("medium");
+  const [requestText, setRequestText] = useState("");
+  const [title, setTitle] = useState("");
+  const [formError, setFormError] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+    
 const API_URL = process.env.REACT_APP_API_URL;
-
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    setFormError("");
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -67,6 +94,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
           setDashboardCounts(data.data.counts);
           setRecentActivities1(data.data.recent);
+          setCategories(data.data.categories);
         }
       } catch (err) {
         setError('Network error. Please try again.');
@@ -113,6 +141,48 @@ const recentActivities = [
   })),
 ].sort((a, b) => new Date(b.time) - new Date(a.time)); // Optional: sort by time
 
+const quicklinks = (url) => {
+  if(url=="#"){
+    setOpenDialog(true)
+  }else {
+     window.location.href=url;
+  }
+
+}
+
+  // Form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!category || !title.trim() || !requestText.trim()) {
+      setFormError("Please select a category and title and enter your prayer request.");
+      return;
+    }
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}add-public-prayer`,{
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        category: category,
+        title: title,
+        description: requestText,
+        priority: priority,
+      }),
+    });
+    const data = await response.json();
+    if(data.status === 200){
+      alert("Prayer added successfully")
+      window.location.reload();
+    }else{
+       alert("Prayer added successfully")
+      window.location.reload();
+    }
+
+
+  };
+
 
   return (
     <div className="dashboard-content" style={{ padding: 24 }}>
@@ -134,7 +204,10 @@ const recentActivities = [
             }}
           >
             <div style={{ fontSize: 14, color: "#888" }}>{item.title}</div>
-            <div style={{ fontSize: 32, fontWeight: 700 }}>{dashboardCounts?.[item.column] ?? 0}</div>
+            <div style={{ fontSize: 32, fontWeight: 700}}><a href={item.url} style={{ 
+      textDecoration: "none",   // removes underline
+      color: "#ff8c00"          // MUI primary blue (you can change to any color)
+    }}>{dashboardCounts?.[item.column] ?? 0}</a></div>
             <div style={{ fontSize: 14, color: "#4caf50" }}>{item.change}</div>
             <div style={{ fontSize: 28, marginLeft: "auto", marginTop: -32 }}>{item.icon}</div>
           </div>
@@ -191,6 +264,7 @@ const recentActivities = [
                   cursor: "pointer",
                   fontSize: 16,
                 }}
+                onClick={() => quicklinks(action.url)}
               >
                 <span>{action.icon}</span>
                 {action.label}
@@ -242,6 +316,79 @@ const recentActivities = [
           <button style={{ border: "none", background: "none", fontSize: 20, cursor: "pointer" }}>{">"}</button>
         </div> */}
       </div>
+
+
+
+
+
+
+
+      {/* Submit Prayer Request Modal */}
+      <Dialog open={openDialog} onClose={handleDialogClose} fullWidth maxWidth="sm">
+        <DialogTitle>Submit Prayer Request</DialogTitle>
+        <DialogContent>
+          <form id="prayer-form" onSubmit={handleSubmit}>
+            <FormControl fullWidth margin="dense" size="small">
+              <InputLabel>Category</InputLabel>
+              <Select
+                value={category}
+                label="Category"
+                onChange={(e) => setCategory(e.target.value)}
+              >
+               {categories.map((cat) => (
+              <MenuItem key={cat.id} value={cat.id}>
+                {cat.name}
+              </MenuItem>
+            ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth margin="dense" size="small">
+              <InputLabel>Priority</InputLabel>
+              <Select
+                value={priority}
+                label="Priority"
+                onChange={(e) => setPriority(e.target.value)}
+              >
+                <MenuItem value="critical">Critical</MenuItem>
+                <MenuItem value="high">High</MenuItem>
+                <MenuItem value="medium">Medium</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              label="Title"
+              fullWidth
+              margin="dense"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+
+
+            <TextField
+              label="Prayer Request"
+              multiline
+              rows={4}
+              fullWidth
+              margin="dense"
+              value={requestText}
+              onChange={(e) => setRequestText(e.target.value)}
+              error={!!formError}
+              helperText={formError}
+            />
+
+
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Cancel</Button>
+          <Button type="submit" form="prayer-form" variant="contained" color="primary">
+            Submit Request
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
     </div>
   );
 };

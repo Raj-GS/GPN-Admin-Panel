@@ -74,6 +74,8 @@ export default function PrayerHub() {
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("medium");
   const [requestText, setRequestText] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [submitAnon, setSubmitAnon] = useState(false);
   const [formError, setFormError] = useState("");
 
@@ -93,8 +95,7 @@ export default function PrayerHub() {
   const [publicPrayerRequests, setPublicPrayerRequests] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+
   const [created_at, setCreated_at] = useState("");
   const [openViewDialog, setOpenViewDialog] = useState(false);
   const { user } = useUser();
