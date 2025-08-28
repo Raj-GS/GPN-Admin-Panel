@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import RegistrationLinks from "../components/RegistrationLinks";
 import {
   Button,
   TextField,
@@ -14,6 +15,18 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,BarChart, Bar
+} from "recharts";
+
+import PageLoader from "../components/PageLoader";
+
 const summaryData = [
   {
     title: "Total Users",
@@ -57,8 +70,6 @@ const quickActions = [
 
 
 const Dashboard = () => {
-  const [selectedRange, setSelectedRange] = useState("Last 7 days");
-  const [page, setPage] = useState(3);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [dashboardCounts, setDashboardCounts] = useState([]);
@@ -71,6 +82,8 @@ const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [formError, setFormError] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [reportdata, setReportdata] = useState([]);
+  const [orgShortcode, setOrgShortcode]=useState('');
     
 const API_URL = process.env.REACT_APP_API_URL;
   const handleDialogClose = () => {
@@ -95,6 +108,16 @@ const API_URL = process.env.REACT_APP_API_URL;
           setDashboardCounts(data.data.counts);
           setRecentActivities1(data.data.recent);
           setCategories(data.data.categories);
+          setOrgShortcode(data.data.orgDetails?.short_code)
+
+          const report = data.data.report; // 👈 extract "report"
+      const formatted = Object.entries(report).map(([month, values]) => ({
+        month,
+        ...values,
+      }));
+
+         
+          setReportdata(formatted);
         }
       } catch (err) {
         setError('Network error. Please try again.');
@@ -183,6 +206,15 @@ const quicklinks = (url) => {
 
   };
 
+if(loading) {
+return (
+  <div>
+    {/* <button onClick={fetchData}>Load Data</button> */}
+    <PageLoader open={loading} />
+  </div>
+);
+}
+
 
   return (
     <div className="dashboard-content" style={{ padding: 24 }}>
@@ -214,65 +246,87 @@ const quicklinks = (url) => {
         ))}
       </div>
 
-      {/* Main Content */}
-      <div style={{ display: "flex", gap: 24 }}>
-        {/* User Growth Chart */}
-        <div style={{ flex: 2, background: "#fff", borderRadius: 12, padding: 24 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h3>User Growth</h3>
-            <select
-              value={selectedRange}
-              onChange={(e) => setSelectedRange(e.target.value)}
-              style={{ padding: 6, borderRadius: 6 }}
-            >
-              <option>Last 7 days</option>
-              <option>Last 30 days</option>
-              <option>Last year</option>
-            </select>
-          </div>
-          <div
-            style={{
-              height: 180,
-              background: "#f5f5f5",
-              borderRadius: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#aaa",
-              marginTop: 24,
-            }}
-          >
-            Chart visualization would appear here
-          </div>
-        </div>
+{/* Main Content */}
+{/* Main Content */}
+<div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 24 }}>
+  {/* User Growth Chart */}
+  <div
+    style={{
+      background: "#fff",
+      borderRadius: 16,
+      padding: 24,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    }}
+  >
+    <h3 style={{ marginBottom: 16, fontSize: 18, fontWeight: 600 }}>
+      Last 5 Months {user?.role === 1 ? "Organizations Report" : "Users Report"}
+    </h3>
+    <div style={{ width: "100%", height: 400 }}>
+      <ResponsiveContainer>
+        <BarChart data={reportdata}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis domain={[0, "auto"]} />
+          <Tooltip />
+          <Legend />
+          {user?.role === 1 ? (
+            <Bar dataKey="organizations" fill="#4e79a7" radius={[6, 6, 0, 0]} />
+          ) : (
+            <Bar dataKey="users" fill="#82ca9d" radius={[6, 6, 0, 0]} />
+          )}
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
 
-        {/* Quick Actions */}
-        <div style={{ flex: 1, background: "#fff", borderRadius: 12, padding: 24 }}>
-          <h3>Quick Actions</h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
-            {quickActions.map((action) => (
-              <button
-                key={action.label}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "10px 16px",
-                  borderRadius: 8,
-                  border: "1px solid #eee",
-                  background: "#fafbfc",
-                  cursor: "pointer",
-                  fontSize: 16,
-                }}
-                onClick={() => quicklinks(action.url)}
-              >
-                <span>{action.icon}</span>
-                {action.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+  {/* Quick Actions */}
+  <div
+    style={{
+      background: "#fff",
+      borderRadius: 16,
+      padding: 24,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    }}
+  >
+    <h3 style={{ marginBottom: 16, fontSize: 18, fontWeight: 600 }}>Quick Actions</h3>
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {quickActions.map((action) => (
+        <button
+          key={action.label}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "12px 16px",
+            borderRadius: 10,
+            border: "1px solid #e0e0e0",
+            background: "#f9fafb",
+            cursor: "pointer",
+            fontSize: 15,
+            fontWeight: 500,
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#eef2ff";
+            e.currentTarget.style.borderColor = "#c7d2fe";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#f9fafb";
+            e.currentTarget.style.borderColor = "#e0e0e0";
+          }}
+          onClick={() => quicklinks(action.url)}
+        >
+          <span style={{ fontSize: 18 }}>{action.icon}</span>
+          {action.label}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+
+
+<RegistrationLinks shortCode={orgShortcode} />
 
       {/* Recent Activity */}
       <div style={{ background: "#fff", borderRadius: 12, padding: 24, marginTop: 24 }}>
