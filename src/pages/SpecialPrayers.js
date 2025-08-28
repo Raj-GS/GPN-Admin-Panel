@@ -20,6 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useUser } from "../context/UserContext";
 import DOMPurify from 'dompurify';
+import PageLoader from "../components/PageLoader";
 
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 
@@ -62,6 +63,7 @@ const [devotionType, setDevotionType] = useState(true); // default to true or fa
 const [prayForNationEnabled, setPrayForNationEnabled] = useState(false);
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
      const navigate = useNavigate();
+   const [loading, setLoading] = useState(true);
    
     // Modal open/close
   const handleDialogOpen = () => {
@@ -76,6 +78,10 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
   };
   useEffect(() => {
     const fetchUsers = async () => {
+
+
+       try {
+      setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}special-prayer-list`, {
         method: 'POST',
@@ -95,6 +101,12 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
       setDevotionList(data.data);
       setTotalItems(data.total);
       setTotalPages(data.totalPages);
+
+       } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
 
    //   setDevotionType(data.settings.hdailydevotiondefault === 'yes');
    //   setDevotionType(data.settings.hdailydevotiondefault)
@@ -144,6 +156,7 @@ const handleDelete = async (id) => {
   if (!confirmDelete) return;
 
   try {
+       setLoading(true);
     const token = localStorage.getItem('token');
 
     const response = await fetch(`${API_URL}delete-special-prayer`, {
@@ -167,8 +180,19 @@ const handleDelete = async (id) => {
     console.error('Error deleting devotion:', error);
     alert('An unexpected error occurred');
   }
+  finally {
+        setLoading(false);
+      }
 };
 
+  if(loading) {
+  return (
+    <div>
+      {/* <button onClick={fetchData}>Load Data</button> */}
+      <PageLoader open={loading} />
+    </div>
+  );
+  }
 
   return (
     <Box sx={{ p: 4 }}>

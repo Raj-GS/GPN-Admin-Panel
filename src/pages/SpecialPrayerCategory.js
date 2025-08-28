@@ -12,7 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Autocomplete from "@mui/material/Autocomplete";
 import AddIcon from '@mui/icons-material/Add';
 import { useUser } from "../context/UserContext";
-
+import PageLoader from '../components/PageLoader';
 const SpecialPrayerCategoryList = () => {
   const [stats, setStats] = useState([
     { title: 'Total Categories', count: 0 },
@@ -36,7 +36,7 @@ const [addCategory, setAddCategory] = useState(false);
 const [category, setCategory]=useState('');
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
-
+const [loading, setLoading] = useState(true);
 
 
   // Fetch category data (mock or API)
@@ -46,6 +46,8 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
 
   const fetchCategories = async () => {
     // Replace this with your actual API call
+      try {
+      setLoading(true);
     const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}special-prayer-categories`,{
       method: 'POST',
@@ -72,6 +74,12 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
       { title: 'Answered', count: data.answered },
       { title: 'This Month', count: data.thisMonth },
     ]);
+
+       } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
   };
 
   const handleEdit = (category) => {
@@ -159,6 +167,16 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
       alert((data?.message || 'Unknown error'));
     }
   };
+
+    if(loading) {
+    return (
+      <div>
+        {/* <button onClick={fetchData}>Load Data</button> */}
+        <PageLoader open={loading} />
+      </div>
+    );
+    }
+
 
   return (
 <Box p={2}>

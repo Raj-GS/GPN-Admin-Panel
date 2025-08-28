@@ -13,13 +13,11 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-
-import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EventIcon from '@mui/icons-material/Event';
+import PageLoader from "../components/PageLoader";
 
 import { useUser } from "../context/UserContext";
 const statusColors = {
@@ -90,6 +88,7 @@ const Events = () => {
 
 
 
+   const [loading, setLoading] = useState(true);
 
   const [eventName, seteventName] = useState('');
   const [startDate, setstartDate] = useState('');
@@ -132,6 +131,9 @@ const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
+
+       try {
+       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}event-list`, {
         method: 'POST',
@@ -152,6 +154,11 @@ const API_URL = process.env.REACT_APP_API_URL;
       setUsers(data.events);
       setTotalItems(data.total);
       setTotalPages(data.pagination,totalPages);
+          } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchUsers();
   }, [status, role, organization,search,page,pageSize]);
@@ -313,6 +320,15 @@ const handleDelete = async (id) => {
     alert('An unexpected error occurred');
   }
 };
+
+    if(loading) {
+    return (
+      <div>
+        {/* <button onClick={fetchData}>Load Data</button> */}
+        <PageLoader open={loading} />
+      </div>
+    );
+    }
 
   return (
     <Box>

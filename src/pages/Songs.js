@@ -15,22 +15,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UploadIcon from '@mui/icons-material/Upload';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
-import PendingActionsIcon from "@mui/icons-material/PendingActions";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
-import EventIcon from '@mui/icons-material/Event';
+
 import { useNavigate } from "react-router-dom";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
+import PageLoader from "../components/PageLoader";
 
 import { useUser } from "../context/UserContext";
-import { upload } from "@testing-library/user-event/dist/upload";
 const statusColors = {
     1: "success",
   2: "warning",
   3: "default"
 };
+
 
 
 
@@ -59,6 +55,7 @@ const [DisplayType, setDisplayType] = useState('Both'); // default to true or fa
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
   const [eventName, seteventName] = useState('');
   const [description, Setdescription]=useState('');
+   const [loading, setLoading] = useState(true);
 
   const [origanisation, SetOriganisation]=useState('');
 const [image, Setimage] = useState({
@@ -134,6 +131,8 @@ const fetchSettings = async () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+       try {
+       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}filter-songs`, {
         method: 'POST',
@@ -154,6 +153,11 @@ const fetchSettings = async () => {
       setUsers(data.data);
       setTotalItems(data.totalCount);
       setTotalPages(data.totalPages);
+        } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchUsers();
   }, [songType, language,organization,search,page,pageSize]);
@@ -330,6 +334,15 @@ const SongsaddtoOrganization = async () => {
     alert(data?.message || 'Failed to update songs');
   }
 };
+
+    if(loading) {
+    return (
+      <div>
+        {/* <button onClick={fetchData}>Load Data</button> */}
+        <PageLoader open={loading} />
+      </div>
+    );
+    }
   return (
     <Box>
       {/* Header */}

@@ -33,7 +33,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUser } from "../context/UserContext";
-
+import PageLoader from "../components/PageLoader";
 function StatCard({ label, count, IconComponent }) {
   return (
     <Card variant="outlined" sx={{ height: "100%", minWidth: 300, width: "100%", borderRadius: 2 }}>
@@ -109,6 +109,9 @@ export default function Testimonies() {
   const [editTestimonyId, setEditTestimonyId] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
+
+   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -153,6 +156,9 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
   }, [page,filterCategory,filterSort,organization]);
 
   const fetchPublicPrayerList = async () => {
+
+      try {
+       setLoading(true);
     // Replace this with your actual API call
     const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}testimony-list`,{
@@ -173,7 +179,11 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
     setPublicPrayerRequests(data.data);
     setTotalPages(data.pagination.totalPages);
 
-
+  } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
   };
 
   
@@ -318,6 +328,15 @@ const handleViewDialogClose = () => {
 
    
   };
+
+    if(loading) {
+    return (
+      <div>
+        {/* <button onClick={fetchData}>Load Data</button> */}
+        <PageLoader open={loading} />
+      </div>
+    );
+    }
 
   return (
     <Box p={{ xs: 1, sm: 2, md: 3 }}>
