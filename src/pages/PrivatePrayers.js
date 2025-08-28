@@ -33,6 +33,7 @@ import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useUser } from "../context/UserContext";
+import PageLoader from "../components/PageLoader";
 
 function StatCard({ label, count, IconComponent }) {
   return (
@@ -104,6 +105,8 @@ export default function PrivatePrayers() {
   const [AnsweredPrayers, SetAnsweredPrayers]=useState(0);
   const [DeclinePrayers, SetADeclinePrayers]=useState(0);
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
+      const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -135,6 +138,9 @@ export default function PrivatePrayers() {
 
   const fetchPublicPrayerList = async () => {
     // Replace this with your actual API call
+
+      try {
+      setLoading(true);
     const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}private-prayer-list`,{
       method: 'POST',
@@ -154,7 +160,11 @@ export default function PrivatePrayers() {
     setPublicPrayerRequests(data.data);
     setTotalPages(data.pagination.totalPages);
 
-
+   } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
   };
 
   
@@ -252,6 +262,15 @@ const handleViewDialogClose = () => {
 
    
   };
+
+  if(loading) {
+  return (
+    <div>
+      {/* <button onClick={fetchData}>Load Data</button> */}
+      <PageLoader open={loading} />
+    </div>
+  );
+  }
 
   return (
     <Box p={{ xs: 1, sm: 2, md: 3 }}>
