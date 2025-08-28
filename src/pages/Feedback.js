@@ -15,6 +15,7 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useUser } from "../context/UserContext";
 import ReviewsIcon from '@mui/icons-material/Reviews';
+import PageLoader from "../components/PageLoader";
 
 function StatCard({ label, count, IconComponent }) {
   return (
@@ -73,6 +74,7 @@ const Feedback = () => {
   const [selected, setSelected] = useState([]);
 const API_URL = process.env.REACT_APP_API_URL;
 
+      const [loading, setLoading] = useState(true);
 
 
 const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];  const handleSelectAll = (event) => {
@@ -86,6 +88,8 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
 
   useEffect(() => {
     const fetchUsers = async () => {
+        try {
+       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}feedback-list`, {
         method: 'POST',
@@ -104,6 +108,12 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
       setUsers(data.data);
       setTotalItems(data.total);
       setTotalPages(data.pagination,totalPages);
+
+           } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchUsers();
   }, [organization,search,page,pageSize]);
@@ -128,6 +138,16 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
 
     fetchRolesAndOrganizations();
   }, []);
+
+
+    if(loading) {
+        return (
+          <div>
+            {/* <button onClick={fetchData}>Load Data</button> */}
+            <PageLoader open={loading} />
+          </div>
+        );
+        }
 
 
   return (

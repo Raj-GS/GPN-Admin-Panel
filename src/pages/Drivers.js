@@ -17,6 +17,7 @@ import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import WarningIcon from '@mui/icons-material/Warning';
+import PageLoader from "../components/PageLoader";
 
 import { useUser } from "../context/UserContext";
 const statusColors = {
@@ -86,6 +87,7 @@ const [openImage, setOpenImage] = useState(false);
 const [selectedImage, setSelectedImage] = useState(null);
 
   const [selected, setSelected] = useState([]);
+      const [loading, setLoading] = useState(true);
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -100,6 +102,8 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
 
   useEffect(() => {
     const fetchUsers = async () => {
+       try {
+       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}driver-list`, {
         method: 'POST',
@@ -119,6 +123,12 @@ const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
       setUsers(data.data);
       setTotalItems(data.total);
       setTotalPages(data.pagination,totalPages);
+
+           } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchUsers();
   }, [status, organization,search,page,pageSize]);
@@ -175,6 +185,15 @@ const handleClose = () => {
       console.error('Failed to update status:', data);
     }
   };
+
+      if(loading) {
+      return (
+        <div>
+          {/* <button onClick={fetchData}>Load Data</button> */}
+          <PageLoader open={loading} />
+        </div>
+      );
+      }
 
   return (
     <Box>

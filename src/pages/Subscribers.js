@@ -9,7 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useUser } from "../context/UserContext";
 
-
+import PageLoader from "../components/PageLoader";
 const statusColors = {
     Accepted: "success",
   Pending: "warning",
@@ -42,6 +42,7 @@ const Subscribers = () => {
   };
 
   const { user } = useUser();
+const [loading, setLoading] = useState(true);
 
 
   const handleSelect = (id) => {
@@ -52,6 +53,9 @@ const Subscribers = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+
+        try {
+             setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}prayer-subscriber-list`, {
         method: 'POST',
@@ -70,12 +74,25 @@ const Subscribers = () => {
       setUsers(data.data);
       setTotalItems(data.totalCount);
       setTotalPages(data.totalPages);
+
+       } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchUsers();
   }, [organization,search,page,pageSize]);
 
   
-
+    if(loading) {
+    return (
+      <div>
+        {/* <button onClick={fetchData}>Load Data</button> */}
+        <PageLoader open={loading} />
+      </div>
+    );
+    }
   
   
   return (

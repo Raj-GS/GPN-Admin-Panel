@@ -5,6 +5,7 @@ import AppHomeSettings from "../components/AppHomeSettings";
 import AppBottomSettings from "../components/AppBottomSettings";
 import YoutubeSettings from "../components/YoutubeSettings";
 import FaithStatementSettings from "../components/FaithStatementSettings";
+import PageLoader from "../components/PageLoader";
 const Settings = () => {
 
     const [currentTab, setCurrentTab] = useState("Approval Settings");
@@ -14,7 +15,7 @@ const Settings = () => {
     const [biblestudy, setbiblestudy] = useState([]);
     const [worship, setworship] = useState([]);
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
-
+const [loading, setLoading] = useState(true);
 
       useEffect(() => {
         fetchSettings();
@@ -22,6 +23,8 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
     
       const fetchSettings = async () => {
         // Replace this with your actual API call
+          try {
+       setLoading(true);
         const token = localStorage.getItem('token');
         const response = await fetch(`${API_URL}settings`,{
           method: 'GET',
@@ -36,9 +39,20 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
         setbiblestudy(data.bibleStudies);
         setworship(data.sundayWorships);
         
-    
+     } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
       };
-
+if(loading) {
+        return (
+          <div>
+            {/* <button onClick={fetchData}>Load Data</button> */}
+            <PageLoader open={loading} />
+          </div>
+        );
+        }
     return (
         <div style={{ background: "#fafbfc", minHeight: "100vh", fontFamily: "Inter, sans-serif" }}>
             {/* <div style={{ display: "flex", height: "100vh" }}> */}

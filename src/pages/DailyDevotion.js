@@ -22,6 +22,7 @@ import { useUser } from "../context/UserContext";
 import DOMPurify from 'dompurify';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // import styles
+import PageLoader from "../components/PageLoader";
 
 // Function to strip HTML and decode HTML entities
 const stripHtml = (html) => {
@@ -57,6 +58,7 @@ const [devotionType, setDevotionType] = useState(true); // default to true or fa
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+      const [loading, setLoading] = useState(true);
    
     // Modal open/close
   const handleDialogOpen = () => {
@@ -71,6 +73,8 @@ const API_URL = process.env.REACT_APP_API_URL;
   };
   useEffect(() => {
     const fetchUsers = async () => {
+       try {
+       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}devotion-list`, {
         method: 'POST',
@@ -92,6 +96,12 @@ const API_URL = process.env.REACT_APP_API_URL;
       setTotalPages(data.pagination.totalPages);
 
       setDevotionType(data.settings.hdailydevotiondefault === 'yes');
+
+          } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
    //   setDevotionType(data.settings.hdailydevotiondefault)
     };
     fetchUsers();
@@ -227,6 +237,14 @@ const handleDelete = async (id) => {
   }
 };
 
+    if(loading) {
+    return (
+      <div>
+        {/* <button onClick={fetchData}>Load Data</button> */}
+        <PageLoader open={loading} />
+      </div>
+    );
+    }
 
   return (
     <Box sx={{ p: 4 }}>
