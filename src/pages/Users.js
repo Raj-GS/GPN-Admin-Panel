@@ -15,6 +15,7 @@ import PersonOffIcon from "@mui/icons-material/PersonOff";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useUser } from "../context/UserContext";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PageLoader from "../components/PageLoader";
 
 const statusColors = {
     Accepted: "success",
@@ -48,6 +49,8 @@ const Users = () => {
   const [Bulkstatus, setBulkstatus] = useState(1); // Default status for adding to My Songs
   const orgOptions = [{ id: 0, org_name: "All Organizations" }, ...organizations];
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
+    const [loading, setLoading] = useState(true);
+  
 // Handle "Select All"
 const handleSelectAll = (event) => {
   if (event.target.checked) {
@@ -109,6 +112,9 @@ const BulkUpdateToUser = async () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+
+       try {
+      setLoading(true);
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}users-list`, {
         method: 'POST',
@@ -129,6 +135,12 @@ const BulkUpdateToUser = async () => {
       setUsers(data.users);
       setTotalItems(data.total);
       setTotalPages(data.totalPages);
+
+       } catch (err) {
+       // setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchUsers();
   }, [status, role, organization,search,page,pageSize]);
@@ -228,7 +240,14 @@ const handleViewDialogClose = () => {
 
 
 
-
+if(loading) {
+return (
+  <div>
+    {/* <button onClick={fetchData}>Load Data</button> */}
+    <PageLoader open={loading} />
+  </div>
+);
+}
 
 
 
