@@ -33,7 +33,8 @@ import AddSong from './pages/AddSong';
 import EditSong from './pages/EditSong';
 import Settings from './pages/Settings';
 import PdfSongs from './pages/PdfSongs';
-
+import ViewPrayForTheNation from './pages/ViewPrayeTheNation';
+import RegistrationForm from  './pages/RegistrationForm';
 
 // PrivateRoute implementation
 function PrivateRoute({ children }) {
@@ -49,7 +50,7 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-
+          <Route path="appuserregistration/:id" element={<RegistrationForm />} />
           {/* Protected admin routes */}
           <Route path="/admin" element={
             <PrivateRoute>
@@ -82,6 +83,9 @@ function App() {
               <Route path="edit-song/:id" element={<EditSong />} />
               <Route path="settings" element={<Settings />} />
               <Route path="pdf-songs" element={<PdfSongs />} />
+              <Route path="view-pray-for-nation" element={<ViewPrayForTheNation />} />
+              
+              
           
           </Route>
 

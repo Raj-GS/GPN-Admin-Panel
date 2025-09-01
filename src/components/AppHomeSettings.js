@@ -96,7 +96,6 @@ const AppHomeSettings = ({ mySettings }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [currentRequest, setCurrentRequest] = useState('');
-const BASE_URL = "http://127.0.0.1:8000";
 
 
     const [devotionEnabled, setdevotionEnabled] = useState('no');
@@ -112,6 +111,7 @@ const BASE_URL = "http://127.0.0.1:8000";
     const [id, setId] = useState(null);
 const fileMeta = [];
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admin/';
+const Image_URL = process.env.REACT_APP_Image_URL;
 
     // Dynamically set from mySettings
     useEffect(() => {
@@ -210,7 +210,7 @@ files.forEach((file, idx) => {
         formData.append("files", file);
         fileMeta.push({
             key: settingsData[idx].key,  // e.g., "logo", "banner"
-            name: settingsData[idx].name || null
+            name: settingsData[idx].ecolumn || null
         });
     }
 });
@@ -297,18 +297,29 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
     }}
   >
 <img
-  src={ setting.name === 'Daily Devotion' ? devotionImg :setting.name === 'Church History' ? churchHistoryImg :setting.name === 'Events' ? eventimg :setting.name === 'Testimonies' ? testimonyImg :setting.name === 'Sunday Worships' ? worshipImg :'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80'}
-   
-
+  src={
+    setting.name === "Daily Devotion"
+      ? `${Image_URL}${devotionImg}`
+      : setting.name === "Church History"
+      ? `${Image_URL}${churchHistoryImg}`
+      : setting.name === "Events"
+      ? `${Image_URL}${eventimg}`
+      : setting.name === "Testimonies"
+      ? `${Image_URL}${testimonyImg}`
+      : setting.name === "Sunday Worships"
+      ? `${Image_URL}${worshipImg}`
+      : "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+  }
   alt={setting.name}
   style={{
     width: 100,
     height: 70,
-    objectFit: 'cover',
+    objectFit: "cover",
     borderRadius: 6,
-    border: '1px solid #ccc'
+    border: "1px solid #ccc",
   }}
 />
+
 
     <button
       style={{
@@ -388,7 +399,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
                 : "1px solid #e0e0e0",
           }}
           onClick={() => {
-  setdevotionImg(`../sample/daily_devotion/${image}`)
+  setdevotionImg(`${Image_URL}sample/daily_devotion/${image}`)
 
              setSelectedTemplate({ id: index + 1 });
 }
@@ -397,7 +408,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
           <CardContent>
             {/* <Typography variant="h6">Daily Devotion {index + 1}</Typography> */}
             <img
-              src={`../sample/daily_devotion/${image}`}
+              src={`${Image_URL}sample/daily_devotion/${image}`}
               alt={`Daily Devotion ${index + 1}`}
               style={{ width: '100%', height: 'auto', borderRadius: 8 }}
             />
@@ -423,7 +434,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
           }}
           onClick={() => {
 
-            setchurchHistoryImg(`../sample/church_history/${image}`)
+            setchurchHistoryImg(`sample/church_history/${image}`)
         
          setSelectedTemplate({ id: index + 1 });
         }
@@ -434,7 +445,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
           <CardContent>
             {/* <Typography variant="h6">Daily Devotion {index + 1}</Typography> */}
             <img
-              src={`../sample/church_history/${image}`}
+              src={`${Image_URL}sample/church_history/${image}`}
               alt={`Church History ${index + 1}`}
               style={{ width: '100%', height: 'auto', borderRadius: 8 }}
             />
@@ -460,7 +471,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
                 : "1px solid #e0e0e0",
           }}
           onClick={() => {
-            seteventimg(`../sample/events/${image}`)
+            seteventimg(`sample/events/${image}`)
              setSelectedTemplate({ id: index + 1 });
         
         }
@@ -470,7 +481,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
           <CardContent>
             {/* <Typography variant="h6">Daily Devotion {index + 1}</Typography> */}
             <img
-              src={`../sample/events/${image}`}
+              src={`${Image_URL}sample/events/${image}`}
               alt={`Events ${index + 1}`}
               style={{ width: '100%', height: 'auto', borderRadius: 8 }}
             />
@@ -495,7 +506,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
                 : "1px solid #e0e0e0",
           }}
           onClick={() =>{
-            setworshipImg(`../sample/worship/${image}`);
+            setworshipImg(`sample/worship/${image}`);
             setSelectedTemplate({ id: index + 1 });
         
         } }
@@ -505,7 +516,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
           <CardContent>
             {/* <Typography variant="h6">Daily Devotion {index + 1}</Typography> */}
             <img
-              src={`../sample/worship/${image}`}
+              src={`${Image_URL}sample/worship/${image}`}
               alt={`Sunday Worships ${index + 1}`}
               style={{ width: '100%', height: 'auto', borderRadius: 8 }}
             />
@@ -530,7 +541,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
                 : "1px solid #e0e0e0",
           }}
           onClick={() => {
-  settestimonyImg(`../sample/testimonies/${image}`);
+  settestimonyImg(`sample/testimonies/${image}`);
   setSelectedTemplate({ id: index + 1 });
 }}
             
@@ -539,7 +550,7 @@ formData.append("fileMeta", JSON.stringify(fileMeta));
           <CardContent>
             {/* <Typography variant="h6">Daily Devotion {index + 1}</Typography> */}
             <img
-              src={`../sample/testimonies/${image}`}
+              src={`${Image_URL}sample/testimonies/${image}`}
               alt={`Testimonies ${index + 1}`}
               style={{ width: '100%', height: 'auto', borderRadius: 8 }}
             />

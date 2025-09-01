@@ -28,7 +28,7 @@ export default function RegistrationLinks({ shortCode }) {
   const [currentUrl, setCurrentUrl]=useState("")
 const [anchorEl, setAnchorEl] = useState(null);
 
-  const registrationLink ="https://glocalprayer.net/prayer/appuserregistration/"+shortCode;
+  const registrationLink =window.location.origin+"/appuserregistration/"+shortCode;
   const androidLink ="https://play.google.com/store/apps/details?id=com.glocalprayer.ep&pcampaignid=web_share";
   const iosLink ="https://apps.apple.com/in/app/glocal-prayer-network/id6479648726";
 

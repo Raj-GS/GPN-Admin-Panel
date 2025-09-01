@@ -294,54 +294,67 @@ const handleDelete = async (id) => {
         />
       </Box>
 
-      {/* Right Side: Settings + Add Button */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          alignItems: "flex-end",
-          minWidth: 220,
-        }}
-      >
+{/* Right Side: Settings + Add Button */}
 <Box
   sx={{
-    backgroundColor: '#E3F2FD', // light blue (Material blue[50])
-    padding: 1.5,
-    borderRadius: 2,
-    border: '1px solid #90CAF9', // blue[300]
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    alignItems: "flex-end",
+    minWidth: 220,
   }}
 >
-  <FormControlLabel
-    control={
-      <Switch
-        checked={prayForNationEnabled}
-        onChange={(e) => setPrayForNationEnabled(e.target.checked)}
-        color="primary"
-      />
-    }
-    label="Pray for the Nation"
-    sx={{ fontWeight: "bold" }}
-  />
+  {/* Pray for Nation Toggle + View Button */}
+  <Box
+    sx={{
+      backgroundColor: "#E3F2FD", // light blue
+      padding: 1.5,
+      borderRadius: 2,
+      border: "1px solid #90CAF9", // blue[300]
+      display: "flex",
+      flexDirection: "column",
+      gap: 1.5,
+      alignItems: "flex-start",
+      width: "100%",
+    }}
+  >
+    <FormControlLabel
+      control={
+        <Switch
+          checked={prayForNationEnabled}
+          onChange={(e) => setPrayForNationEnabled(e.target.checked)}
+          color="primary"
+        />
+      }
+      label="Pray for the Nation"
+      sx={{ fontWeight: "bold" }}
+    />
+
+    <Button
+      variant="outlined"
+      size="small"
+      sx={{ alignSelf: "flex-end" }}
+      onClick={() => navigate("/admin/view-pray-for-nation")}
+    >
+      View
+    </Button>
+  </Box>
+
+  {/* Add Special Prayer */}
+  <Box sx={{ padding: 1 }}>
+    <Button
+      variant="contained"
+      sx={{ backgroundColor: "#177373" }}
+      startIcon={<AddIcon />}
+      onClick={() => navigate("/admin/add-special-prayer")}
+    >
+      Add Special Prayer
+    </Button>
+  </Box>
 </Box>
 
 
 
-
-<Box  sx={{
-    
-     padding: 1,
-}}>
-        <Button
-          variant="contained"
-         sx={{ backgroundColor: '#177373' }}
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/admin/add-special-prayer')}
-        >
-          Add Special Prayer
-        </Button>
-      </Box>
-      </Box>
     </Box>
   </Paper>
 </Grid>

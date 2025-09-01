@@ -15,6 +15,7 @@ import {
 import { useParams } from 'react-router-dom';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // import styles
+import { useUser } from "../context/UserContext";
 
 const templates = [
   {
@@ -159,7 +160,14 @@ const [prayerPoints, setPrayerPoints] = useState([
 const [selectedTemplateId, setSelectedTemplateId] = useState(21);
 const [showAllTemplates, setShowAllTemplates] = useState(false);
 const [categories, setCategories] = useState([]);
+
+ const [loading, setLoading] = useState(false);
+  const [generatedPoints, setGeneratedPoints] = useState([]); // API response
+  const [pointCount, setPointCount] = useState(0);
+
+
 const API_URL = process.env.REACT_APP_API_URL;
+  const { user } = useUser();
 
 const { id } = useParams();
   useEffect(() => {
@@ -355,6 +363,58 @@ console.log('Image URL:', templates.find(t => t.id === selectedTemplateId)?.imag
   };
 
 
+   const generatePrayerPoints = async () => {
+    setLoading(true);
+    setGeneratedPoints([]);
+    try {
+      const country_code = "in";
+      const no_of_prayers = 20;
+
+      const res = await fetch(
+        `http://64.227.157.61:8004/generate-prayers?country=in&count=5`
+      );
+      const data = await res.json();
+
+      let formatted = data.formatted_output
+        .replace(/<think>[\s\S]*?<\/think>/gi, "")
+        .replace(/```json|```/gi, "")
+        .trim();
+
+      const correctData = JSON.parse(formatted);
+
+      if (correctData && Array.isArray(correctData)) {
+        // Flatten points with category
+        const parsedPoints = [];
+        correctData.forEach((section) => {
+          section.prayer_points.forEach((point) => {
+            parsedPoints.push({
+              id: ++pointCount,
+              title: section.category.replace(/\s*\d+\.\s*/, " "),
+              english: point.en,
+              telugu: point.te,
+            });
+          });
+        });
+        setGeneratedPoints(parsedPoints);
+        setPointCount(pointCount);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    }
+    setLoading(false);
+  };
+ const approvePrayerPoint = (index) => {
+    const point = generatedPoints[index];
+
+    const newApproved = {
+      id: Date.now(), // new unique id
+      title: point.title,
+      english: point.english,
+      telugu: point.telugu,
+    };
+
+    setPrayerPoints((prev) => [...prev, newApproved]);
+  };
   return (
     <Box display="flex" justifyContent="center" mt={4}>
       <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: "900px" }}>
@@ -648,24 +708,98 @@ console.log('Image URL:', templates.find(t => t.id === selectedTemplateId)?.imag
         onChange={(e) => handlePrayerPointChange(index, 'title', e.target.value)}
         fullWidth
       />
-      <TextField
-        label="Telugu Prayer Point"
-        value={point.telugu}
-        onChange={(e) => handlePrayerPointChange(index, 'telugu', e.target.value)}
-        fullWidth
-      />
+      
       <TextField
         label="English Prayer Point"
         value={point.english}
         onChange={(e) => handlePrayerPointChange(index, 'english', e.target.value)}
         fullWidth
       />
+      <TextField
+        label="Telugu Prayer Point"
+        value={point.telugu}
+        onChange={(e) => handlePrayerPointChange(index, 'telugu', e.target.value)}
+        fullWidth
+      />
     </Box>
   ))}
 
-  <Button variant="contained" onClick={handleAddPrayerPoint} sx={{ mt: 2 }}>
+
+
+
+
+
+     {/* Render generated points */}
+      {generatedPoints.map((point, index) => (
+        <Box
+          key={index}
+          mt={2}
+          p={2}
+          border="1px solid #ccc"
+          borderRadius={2}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+        >
+          <Typography variant="h6">{point.title}</Typography>
+
+          <TextField
+            label={`English Prayer Point`}
+            value={point.english}
+            onChange={(e) =>
+              handlePrayerPointChange(index, "english", e.target.value)
+            }
+            fullWidth
+          />
+
+          <TextField
+            label="Telugu Prayer Point"
+            value={point.telugu}
+            onChange={(e) =>
+              handlePrayerPointChange(index, "telugu", e.target.value)
+            }
+            fullWidth
+          />
+
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => approvePrayerPoint(index)}
+          >
+            Approve
+          </Button>
+        </Box>
+      ))}
+
+
+
+
+
+
+
+
+
+
+
+
+{user?.role===1 ?(
+
+   <Button variant="contained" onClick={generatePrayerPoints} sx={{ mt: 2 }}>
+    Generate Prayer Points
+  </Button>
+)
+
+
+
+: (
+      <Button variant="contained" onClick={handleAddPrayerPoint} sx={{ mt: 2 }}>
     + Prayer Point
   </Button>
+
+)
+
+}
+
 </Box>
 
  <Box>
