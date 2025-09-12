@@ -310,8 +310,8 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:2000/api/admi
                 </TableCell>
                 <TableCell>{new Date(cat.created_at).toLocaleDateString()}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleEdit(cat)}><EditIcon /></IconButton>
-                  <IconButton onClick={() => handleDelete(cat.id)}><DeleteIcon /></IconButton>
+                  <IconButton aria-label="edit category" onClick={() => handleEdit(cat)}><EditIcon /></IconButton>
+                  <IconButton aria-label="delete category" onClick={() => handleDelete(cat.id)}><DeleteIcon /></IconButton>
                 </TableCell>
               </TableRow>
             ))}

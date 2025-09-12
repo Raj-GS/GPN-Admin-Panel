@@ -233,50 +233,33 @@ const API_URL = process.env.REACT_APP_API_URL;
                 },
               }}
             />
-            <TextField
-              fullWidth
-              label="Password"
-              type={showPassword ? 'text' : 'password'}
-              margin="normal"
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              error={!!errors.password}
-              helperText={errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ?  <Visibility />: <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#2d6a5b',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#ff8c00',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#ff8c00',
-                  },
-                },
-                '& .MuiInputLabel-root': {
-                  color: '#1a4a3a',
-                  '&.Mui-focused': {
-                    color: '#ff8c00',
-                  },
-                },
-              }}
-            />
+       <TextField
+  fullWidth
+  label="Password"
+  type={showPassword ? 'text' : 'password'}
+  margin="normal"
+  required
+  value={password}
+  onChange={e => setPassword(e.target.value)}
+  error={!!errors.password}
+  helperText={errors.password}
+  inputProps={{ "data-testid": "password-input" }}   // ✅ correct place
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          aria-label="toggle password visibility"
+          onClick={handleClickShowPassword}
+          onMouseDown={handleMouseDownPassword}
+          edge="end"
+        >
+          {showPassword ? <Visibility /> : <VisibilityOff />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
+
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1, mb: 2 }}>
               <Typography 
                 variant="body2" 
