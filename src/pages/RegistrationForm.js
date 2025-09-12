@@ -150,6 +150,7 @@ const formik = useFormik({
 
       if (response.ok) {
         alert("You have been successfully registered! Please check your email for further instructions.");
+        window.location.reload();
       } else {
         const errorData = await response.json();
         alert(`Error saving settings: ${errorData.message}`);

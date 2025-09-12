@@ -145,21 +145,33 @@ const BulkUpdateToUser = async () => {
     fetchUsers();
   }, [status, role, organization,search,page,pageSize]);
 
-  useEffect(() => {
-    const fetchRolesAndOrganizations = async () => {
+useEffect(() => {
+  const fetchRolesAndOrganizations = async () => {
+    try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}roles-organizations`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+        },
       });
-      const data = await response.json();
-      setRoles(data.roles);
-      setOrganizations(data.organizations);
-    };
 
-    fetchRolesAndOrganizations();
-  }, []);
+      // Check if response exists and is OK
+      if (!response || !response.ok) {
+        console.error("Failed to fetch roles and organizations", response);
+        return;
+      }
+
+      const data = await response.json();
+      setRoles(data.roles || []);
+      setOrganizations(data.organizations || []);
+    } catch (error) {
+      console.error("Error fetching roles and organizations:", error);
+    }
+  };
+
+  fetchRolesAndOrganizations();
+}, []);
+
 
   const handleEdit = (id) => {
     setEditUser(users.find((user) => user.id === id));

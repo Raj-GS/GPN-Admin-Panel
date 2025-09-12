@@ -382,20 +382,23 @@ return (
         <DialogTitle>Submit Prayer Request</DialogTitle>
         <DialogContent>
           <form id="prayer-form" onSubmit={handleSubmit}>
-            <FormControl fullWidth margin="dense" size="small">
-              <InputLabel>Category</InputLabel>
-              <Select
-                value={category}
-                label="Category"
-                onChange={(e) => setCategory(e.target.value)}
-              >
-               {categories.map((cat) => (
-              <MenuItem key={cat.id} value={cat.id}>
-                {cat.name}
-              </MenuItem>
-            ))}
-              </Select>
-            </FormControl>
+          <FormControl fullWidth margin="dense" size="small">
+  <InputLabel id="category-label">Category</InputLabel>
+  <Select
+    labelId="category-label"   // 👈 link to InputLabel
+    value={category}
+    label="Category"
+    onChange={(e) => setCategory(e.target.value)}
+    data-testid="category-select"
+  >
+    {categories.map((cat) => (
+      <MenuItem key={cat.id} value={cat.id}>
+        {cat.name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
+
 
             <FormControl fullWidth margin="dense" size="small">
               <InputLabel>Priority</InputLabel>
@@ -403,6 +406,7 @@ return (
                 value={priority}
                 label="Priority"
                 onChange={(e) => setPriority(e.target.value)}
+                data-testid="priority-select"
               >
                 <MenuItem value="critical">Critical</MenuItem>
                 <MenuItem value="high">High</MenuItem>
@@ -415,6 +419,7 @@ return (
               margin="dense"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              data-testid="title-input"
             />
 
 
@@ -428,6 +433,7 @@ return (
               onChange={(e) => setRequestText(e.target.value)}
               error={!!formError}
               helperText={formError}
+               data-testid="request-input"
             />
 
 
